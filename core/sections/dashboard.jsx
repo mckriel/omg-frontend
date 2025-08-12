@@ -281,8 +281,6 @@ const Dashboard = ({ guildData }) => {
                     onSearchChange={(value) => setSearchFilter(value)}
                 />
 
-                {/* Role Distribution */}
-                <RoleDistribution tanks={data.tanks} healers={data.healers} dps={data.dps} />
             </Box>
         </section>
     )
