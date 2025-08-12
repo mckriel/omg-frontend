@@ -21,13 +21,22 @@ import HowToRegIcon from '@mui/icons-material/HowToReg'
 
 import './scss/nav.scss'
 
+// Helper function to format guild name properly
+const formatGuildName = (name) => {
+    if (!name) return '';
+    return name
+        .split('-')
+        .map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
+        .join(' ');
+};
+
 const navigationItems = {
     OVERVIEW: {
         label: 'OVERVIEW',
         items: [
             {
-                label: 'DASHBOARD',
-                path: '/',
+                label: 'RAID',
+                path: '/raid',
                 icon: DashboardIcon,
             },
             {
@@ -39,16 +48,6 @@ const navigationItems = {
                 label: 'AUDIT',
                 path: '/audit',
                 icon: AssessmentIcon,
-            },
-            {
-                label: 'MYTHIC PLUS',
-                path: '/mythic-plus',
-                icon: StarIcon,
-            },
-            {
-                label: 'PVP',
-                path: '/rated-pvp',
-                icon: EmojiEventsIcon,
             },
             {
                 label: 'ROSTER BUILDER',
@@ -100,14 +99,31 @@ export default function Nav() {
     // Desktop horizontal nav bar
     const DesktopNavBar = () => (
         <div className="crm-nav-bar">
-            {navigationItems.OVERVIEW.items.map((item) => (
-                <Link key={item.path} href={item.path} className="crm-nav-link">
-                    <div className={`crm-nav-item${isActive(item.path, pathname) ? ' crm-nav-item-active' : ''}`}>
-                        <item.icon className="crm-nav-item-icon" />
-                        <span className="crm-nav-item-label">{item.label}</span>
-                    </div>
-                </Link>
-            ))}
+            <div className="crm-nav-left">
+                {navigationItems.OVERVIEW.items.map((item) => (
+                    <Link key={item.path} href={item.path} className="crm-nav-link">
+                        <div className={`crm-nav-item${isActive(item.path, pathname) ? ' crm-nav-item-active' : ''}`}>
+                            <item.icon className="crm-nav-item-icon" />
+                            <span className="crm-nav-item-label">{item.label}</span>
+                        </div>
+                    </Link>
+                ))}
+            </div>
+            <div className="crm-nav-right">
+                <a 
+                    href="https://discord.gg/z9JxvNQ5Zp" 
+                    target="_blank" 
+                    rel="noopener noreferrer"
+                    className="discord-link"
+                >
+                    <span className="discord-text">Join our Discord</span>
+                    <img 
+                        src="/images/discord-white.png" 
+                        alt="Join Discord" 
+                        className="discord-icon"
+                    />
+                </a>
+            </div>
         </div>
     )
 
@@ -143,8 +159,16 @@ export default function Nav() {
             <div className="crm-logo-bar">
                 <div className="crm-logo-bar-inner">
                     <Link href="/" className="crm-logo-link">
-                        {process.env.NEXT_PUBLIC_GUILD_NAME}
+                        <div className="guild-header-container-vertical">
+                            <img 
+                                src="/images/omg-300px.png" 
+                                alt="One More Game Logo" 
+                                className="guild-emblem-image-centered"
+                            />
+                            <span className="guild-name-text-centered">{formatGuildName(process.env.NEXT_PUBLIC_GUILD_NAME)}</span>
+                        </div>
                     </Link>
+                    
                     {/* Mobile menu button (right side) */}
                     <div className="crm-mobile-menu-btn-wrapper">
                         <IconButton
@@ -172,7 +196,14 @@ export default function Nav() {
             >
                 <div className="nav-mobile-drawer-content">
                     <div className="logoSmall">
-                        {process.env.NEXT_PUBLIC_GUILD_NAME}
+                        <div className="guild-header-container-vertical mobile">
+                            <img 
+                                src="/images/omg-300px.png" 
+                                alt="One More Game Logo" 
+                                className="guild-emblem-image-centered mobile"
+                            />
+                            <span className="guild-name-text-centered">{formatGuildName(process.env.NEXT_PUBLIC_GUILD_NAME)}</span>
+                        </div>
                     </div>
                     {renderNavItems()}
                 </div>

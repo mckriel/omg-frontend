@@ -1,13 +1,13 @@
 body, html {
   background: #110d17;
-  font-family: var(--font-arimo);
+  font-family: var(--font-blizzard-body);
   font-size: 16px;
   color: #dcdada;
   padding: 0;
   margin: 0;
 
-  h1, h2, h3, h4 {
-    font-family: var(--font-oswald);
+  h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-blizzard-heading);
     text-transform: uppercase;
     font-weight: bold;
   }
@@ -21,6 +21,11 @@ body, html {
     padding: 0;
     margin: 0;
   }
+}
+
+// Ensure all elements use Blizzard fonts globally
+*, *::before, *::after {
+  font-family: var(--font-blizzard-body);
 }
 /* width */
 ::-webkit-scrollbar {

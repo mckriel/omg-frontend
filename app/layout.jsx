@@ -2,8 +2,9 @@ import StyledComponentsRegistry from '../lib/registry'
 import { Analytics } from '@vercel/analytics/react'
 
 import '@/core/themes/base.scss'
+import '@/core/fonts/blizzard-local.css'
 
-import { systemui } from '@/app/fonts'
+import { systemui, jockeyone } from '@/app/fonts'
 import BaseLayout from '@/core/layout'
 import seo from '@/core/seo'
 
@@ -18,7 +19,7 @@ export default function RootLayout({ children }) {
                 <meta name="theme-color" content="#1a1a1a" />
             </head>
             <body>
-                <div className={`${systemui.className} applicationWrapper`}>
+                <div className={`${systemui.className} ${jockeyone.className} applicationWrapper`}>
                     <Analytics />
                     <StyledComponentsRegistry>
                         <BaseLayout>{children}</BaseLayout>

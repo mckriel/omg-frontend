@@ -446,6 +446,13 @@ function Table(theme) {
                 },
             },
         },
+        MuiTableCell: {
+            styleOverrides: {
+                root: {
+                    fontFamily: 'SemplicitaPro, Open Sans, system-ui, sans-serif',
+                },
+            },
+        },
     }
 }
 function Tabs(theme) {
@@ -548,19 +555,19 @@ function Typography(theme) {
     return {
         MuiTypography: {
             styleOverrides: {
-                h1: { fontWeight: 600, fontSize: '1.8rem', lineHeight: 1.21 },
-                h2: { fontWeight: 600, fontSize: '1.4rem', lineHeight: 1.27 },
-                h3: { fontWeight: 600, fontSize: '1.3rem', lineHeight: 1.33 },
-                h4: { fontWeight: 600, fontFamily: `${jockeyone.style.fontFamily}`, fontSize: '1rem', lineHeight: 1.4 },
-                h5: { fontWeight: 600, fontSize: '1rem', lineHeight: 1.5 },
-                h6: { fontFamily: `${jockeyone.style.fontFamily}`, fontWeight: 400, fontSize: '1rem', lineHeight: 1.57, textTransform: 'uppercase' },
-                caption: { fontWeight: 400, fontSize: '0.9rem', lineHeight: 1.66 },
-                body1: { fontSize: '0.875rem', lineHeight: 1.57 },
-                body2: { fontSize: '0.9rem', lineHeight: 1.66 },
-                subtitle1: { fontSize: '0.875rem', fontWeight: 600, lineHeight: 1.57 },
-                subtitle2: { fontSize: '0.9rem', fontWeight: 500, lineHeight: 1.66 },
-                overline: { lineHeight: 1.66 },
-                button: { textTransform: 'capitalize' },
+                h1: { fontFamily: 'SemplicitaPro, Open Sans, system-ui, sans-serif', fontWeight: 700, fontSize: '1.8rem', lineHeight: 1.21 },
+                h2: { fontFamily: 'SemplicitaPro, Open Sans, system-ui, sans-serif', fontWeight: 600, fontSize: '1.4rem', lineHeight: 1.27 },
+                h3: { fontFamily: 'SemplicitaPro, Open Sans, system-ui, sans-serif', fontWeight: 600, fontSize: '1.3rem', lineHeight: 1.33 },
+                h4: { fontFamily: 'SemplicitaPro, Open Sans, system-ui, sans-serif', fontWeight: 500, fontSize: '1rem', lineHeight: 1.4 },
+                h5: { fontFamily: 'SemplicitaPro, Open Sans, system-ui, sans-serif', fontWeight: 500, fontSize: '1rem', lineHeight: 1.5 },
+                h6: { fontFamily: 'SemplicitaPro, Open Sans, system-ui, sans-serif', fontWeight: 400, fontSize: '1rem', lineHeight: 1.57, textTransform: 'uppercase' },
+                caption: { fontFamily: 'SemplicitaPro, Open Sans, system-ui, sans-serif', fontWeight: 300, fontSize: '0.9rem', lineHeight: 1.66 },
+                body1: { fontFamily: 'SemplicitaPro, Open Sans, system-ui, sans-serif', fontWeight: 400, fontSize: '0.875rem', lineHeight: 1.57 },
+                body2: { fontFamily: 'SemplicitaPro, Open Sans, system-ui, sans-serif', fontWeight: 400, fontSize: '0.9rem', lineHeight: 1.66 },
+                subtitle1: { fontFamily: 'SemplicitaPro, Open Sans, system-ui, sans-serif', fontWeight: 500, fontSize: '0.875rem', lineHeight: 1.57 },
+                subtitle2: { fontFamily: 'SemplicitaPro, Open Sans, system-ui, sans-serif', fontWeight: 500, fontSize: '0.9rem', lineHeight: 1.66 },
+                overline: { fontFamily: 'SemplicitaPro, Open Sans, system-ui, sans-serif', fontWeight: 400, lineHeight: 1.66 },
+                button: { fontFamily: 'SemplicitaPro, Open Sans, system-ui, sans-serif', fontWeight: 500, textTransform: 'capitalize' },
             },
         },
     }

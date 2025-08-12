@@ -29,14 +29,14 @@ const Recruitment = () => {
                             <Box sx={{ mb: 2 }}>
                                 <MultiColorHeadingH1
                                     floatingText="War Within Season 3"
-                                    highlightText="GUILD NAME"
+                                    highlightText="One More Game"
                                 >
                                     is recruiting
                                 </MultiColorHeadingH1>
                                 
                                 <Typography variant="body1" sx={{ mt: 3,}}>
-                                    GUILD NAME is semi-hardcore guild located on the
-                                    retail EU-Ravencrest Realm.
+                                    One More Game is semi-hardcore guild located on the
+                                    retail EU-Sylvanas Realm.
                                     <br /> We&apos;re looking for players who can
                                     strengthen our roster and help us progress Mythic as
                                     far as possible.
@@ -73,11 +73,11 @@ const Recruitment = () => {
                                         >
                                             <Box component="ul" sx={{ pl: 2 }}>
                                                 <li>
-                                                    1) For <strong>Season 2</strong> progression
-                                                    we&apos;re looking for <strong>628+</strong> itemlevel
+                                                    1) For <strong>Season 3</strong> progression
+                                                    we&apos;re looking for <strong>685+</strong> itemlevel
                                                 </li>
                                                 <li>
-                                                    2) <strong>8/8</strong> Heroic Experience or
+                                                    2) <strong>4/8</strong> Mythic Experience or
                                                     greater
                                                 </li>
                                                 <li>

@@ -1,18 +1,9 @@
-import { Poppins, Jockey_One } from 'next/font/google'
+// All fonts now use Blizzard SemplicitaPro via CSS
+// Simplified font configuration - everything uses blizzard-font-class
+export const systemui = {
+    className: 'blizzard-font-class'
+}
 
-// Create font configurations with fallbacks
-export const systemui = Poppins({
-    subsets: ['latin'],
-    weight: ['400', '500', '600'],
-    display: 'swap',
-    fallback: ['system-ui', 'arial', 'sans-serif'],
-    preload: false, // Disable preloading to avoid build issues
-})
-
-export const jockeyone = Jockey_One({
-    subsets: ['latin'],
-    weight: ['400'],
-    display: 'swap',
-    fallback: ['system-ui', 'arial', 'sans-serif'],
-    preload: false, // Disable preloading to avoid build issues
-})
+export const jockeyone = {
+    className: 'blizzard-font-class'
+}

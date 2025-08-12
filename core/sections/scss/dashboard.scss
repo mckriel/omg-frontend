@@ -1,4 +1,5 @@
 .dashboard {
+  padding-top: 24px;
   padding-bottom: 32px;
 }
 
@@ -26,7 +27,7 @@
 }
 
 .missing-enchants-title {
-  font-size: 1.5rem;
+  font-size: 2.5rem;
   margin-bottom: 16px;
   margin-top: 32px;
   text-transform: capitalize !important;
@@ -41,21 +42,30 @@
 .stat-card {
   padding: 16px;
   height: 100%;
+  background-color: #1a1a1a;
 }
 .stat-card-header {
   display: flex;
   align-items: center;
-  margin-bottom: 16px;
+  justify-content: center;
+  background-color: #1a1a1a;
+  padding: 12px;
+  border-radius: 8px;
+  margin: -16px -16px 16px -16px;
 }
 .stat-card-title {
   font-size: 1.1rem;
+  text-align: center;
+  font-weight: 500;
 }
 .stat-card-value {
   margin-bottom: 8px;
   font-size: 2rem;
+  text-align: center;
 }
 .stat-card-description {
   color: var(--mui-palette-text-secondary, #aaa);
+  text-align: center;
 }
 
 // TopPlayersTable styles
@@ -79,4 +89,40 @@
 }
 .top-players-table-row .score {
   font-weight: bold;
+}
+.top-players-table-row:last-child .MuiTableCell-root {
+  border-bottom: none;
+}
+
+// Center content in specific audit table columns
+.MuiTableBody-root .MuiTableRow-root .MuiTableCell-root:nth-child(5), // Missing Enchants
+.MuiTableBody-root .MuiTableRow-root .MuiTableCell-root:nth-child(6), // Waist
+.MuiTableBody-root .MuiTableRow-root .MuiTableCell-root:nth-child(7), // Cloak
+.MuiTableBody-root .MuiTableRow-root .MuiTableCell-root:nth-child(8), // Tier Sets
+.MuiTableBody-root .MuiTableRow-root .MuiTableCell-root:nth-child(9)  // Locked
+{
+  text-align: center;
+  white-space: normal;
+  word-wrap: break-word;
+  min-width: 80px;
+}
+
+// Center headers for the same columns
+.MuiTableHead-root .MuiTableRow-root .MuiTableCell-root:nth-child(5), // Missing Enchants
+.MuiTableHead-root .MuiTableRow-root .MuiTableCell-root:nth-child(6), // Waist
+.MuiTableHead-root .MuiTableRow-root .MuiTableCell-root:nth-child(7), // Cloak
+.MuiTableHead-root .MuiTableRow-root .MuiTableCell-root:nth-child(8), // Tier Sets
+.MuiTableHead-root .MuiTableRow-root .MuiTableCell-root:nth-child(9)  // Locked
+{
+  text-align: center;
+}
+
+// Specific styling for locked column to ensure content displays
+.MuiTableBody-root .MuiTableRow-root .MuiTableCell-root:nth-child(9) {
+  min-width: 120px;
+  max-width: 180px;
+  overflow: visible;
+  text-overflow: clip;
+  white-space: normal;
+  word-break: break-word;
 } 

@@ -19,6 +19,12 @@ import BuildIcon from '@mui/icons-material/Build'
 import LockIcon from '@mui/icons-material/Lock'
 import StarIcon from '@mui/icons-material/Star'
 import EmojiEventsIcon from '@mui/icons-material/EmojiEvents'
+import ShieldIcon from '@mui/icons-material/Shield'
+import LocalHospitalIcon from '@mui/icons-material/LocalHospital'
+import SwordIcon from '@mui/icons-material/MyLocation'
+import TextField from '@mui/material/TextField'
+import InputAdornment from '@mui/material/InputAdornment'
+import SearchIcon from '@mui/icons-material/Search'
 
 
 import './scss/dashboard.scss'
@@ -28,6 +34,7 @@ import RoleDistribution from '@/core/components/RoleDistribution'
 
 const Dashboard = ({ guildData }) => {
     const [isDataLoaded, setIsDataLoaded] = React.useState(false)
+    const [searchFilter, setSearchFilter] = React.useState('')
     const [query, setQuery] = React.useState('')
     const [classFilter, setClassFilter] = React.useState([])
     const [rankFilter, setRankFilter] = React.useState('all')
@@ -100,10 +107,33 @@ const Dashboard = ({ guildData }) => {
             player.missingEnchants && player.missingEnchants.length > 0
         )
 
+        // Count raid-ready players (675+ ilvl) - simple version that was working
+        const raidReadyPlayers = allPlayers.filter(player => {
+            return player.itemLevel && player.itemLevel >= 675
+        })
+
+        // Get raid-ready players from processed auditData (includes lockout info)
+        const raidReadyPlayersWithLockouts = auditData.all.filter(player => {
+            return player.itemLevel && player.itemLevel >= 675
+        })
+
+        // Calculate role counts from raid-ready players
+        const raidReadyTanks = raidReadyPlayers.filter(player => 
+            config.TANKS.includes(player.spec)
+        )
+        const raidReadyHealers = raidReadyPlayers.filter(player => 
+            config.HEALERS.includes(player.spec)
+        )
+        const raidReadyDPS = raidReadyPlayers.filter(player => 
+            !config.TANKS.includes(player.spec) && !config.HEALERS.includes(player.spec)
+        )
+
         setIsDataLoaded(true)
 
         return {
             totalMembers: allPlayers.length,
+            raidReadyCount: raidReadyPlayers.length,
+            raidReadyPlayersData: raidReadyPlayersWithLockouts,
             missingEnchants: missingEnchants.all || 0,
             raidLocked: totalLocked,
             avgTopMplus: avgTopMplus,
@@ -111,9 +141,9 @@ const Dashboard = ({ guildData }) => {
             topMplus: topPve,
             topPvp: topPvp,
             missingEnchantsPlayers: missingEnchantsPlayers,
-            tanks: roleCounts.tanks || 0,
-            healers: roleCounts.healers || 0,
-            dps: roleCounts.dps || 0,
+            tanks: raidReadyTanks.length,
+            healers: raidReadyHealers.length,
+            dps: raidReadyDPS.length,
         }
     }, [auditData, guildData])
 
@@ -124,31 +154,41 @@ const Dashboard = ({ guildData }) => {
     return (
         <section className="dashboard">
             <Box>
-                <div className="logoHolder">
-                    <Typography
-                        variant="h2"
-                        component="h2"
-                        className="logoHolder-title"
-                    >
-                        Dashboard
-                    </Typography>
-                    <Typography
-                        variant="p"
-                        component="p"
-                        color="text.secondary"
-                        className="logoHolder-description"
-                    >
-                        Guild Overview and Statistics
-                    </Typography>
-                </div>
-
-                {/* Stats Cards */}
+                {/* Role Stats Cards */}
                 <Grid container spacing={2} className="stats-cards">
+                    <Grid item xs={12} sm={6} md={4}>
+                        <StatCard
+                            title="Tanks"
+                            value={data.tanks}
+                            description="Active tank players"
+                            icon={ShieldIcon}
+                        />
+                    </Grid>
+                    <Grid item xs={12} sm={6} md={4}>
+                        <StatCard
+                            title="Healers"
+                            value={data.healers}
+                            description="Active healer players"
+                            icon={LocalHospitalIcon}
+                        />
+                    </Grid>
+                    <Grid item xs={12} sm={6} md={4}>
+                        <StatCard
+                            title="DPS"
+                            value={data.dps}
+                            description="Active DPS players"
+                            icon={SwordIcon}
+                        />
+                    </Grid>
+                </Grid>
+
+                {/* Other Stats Cards */}
+                <Grid container spacing={2} className="stats-cards" sx={{ mt: 2 }}>
                     <Grid item xs={12} sm={6} md={2.4}>
                         <StatCard
-                            title="Total Characters"
-                            value={data.totalMembers}
-                            description="Active guild characters"
+                            title="Characters"
+                            value={data.raidReadyCount}
+                            description="Raid ready characters"
                             icon={GroupIcon}
                         />
                     </Grid>
@@ -186,35 +226,57 @@ const Dashboard = ({ guildData }) => {
                     </Grid>
                 </Grid>
 
-                {/* Top Players Tables */}
-                <Grid container spacing={2} className="top-players">
-                    <Grid item xs={12} md={6}>
-                        <TopPlayersTable
-                            data={data.topMplus}
-                            title="Top Mythic+ Players"
-                            scoreKey="score"
-                        />
-                    </Grid>
-                    <Grid item xs={12} md={6}>
-                        <TopPlayersTable
-                            data={data.topPvp}
-                            title="Top PvP Players"
-                            scoreKey="pvp"
-                        />
-                    </Grid>
-                </Grid>
 
-                {/* Missing Enchants Table */}
-                <Typography
-                    variant="h2"
-                    component="h2"
-                    className="missing-enchants-title"
-                >
-                    Missing Enchants
-                </Typography>
+                {/* Raid Roster Table */}
+                <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 0.25 }}>
+                    <Typography
+                        variant="h2"
+                        component="h2"
+                        className="missing-enchants-title"
+                        sx={{ mb: 0 }}
+                    >
+                        Raid Roster
+                    </Typography>
+                    <TextField
+                        size="small"
+                        placeholder="Search players..."
+                        value={searchFilter}
+                        onChange={(e) => setSearchFilter(e.target.value)}
+                        InputProps={{
+                            startAdornment: (
+                                <InputAdornment position="start">
+                                    <SearchIcon />
+                                </InputAdornment>
+                            ),
+                        }}
+                        sx={{ 
+                            width: 300,
+                            mt: 4,
+                            '& .MuiOutlinedInput-root': {
+                                backgroundColor: '#2a2a2a',
+                                fontFamily: 'var(--font-blizzard-primary)',
+                                '& fieldset': {
+                                    border: 'none',
+                                },
+                                '&:hover fieldset': {
+                                    border: 'none',
+                                },
+                                '&.Mui-focused fieldset': {
+                                    border: 'none',
+                                },
+                                '& input::placeholder': {
+                                    fontFamily: 'var(--font-blizzard-primary)',
+                                    opacity: 0.7,
+                                },
+                            }
+                        }}
+                    />
+                </Box>
                 <AuditBlock
-                    data={{ all: data.missingEnchantsPlayers }}
+                    data={{ all: data.raidReadyPlayersData }}
                     name="all"
+                    searchFilter={searchFilter}
+                    onSearchChange={(value) => setSearchFilter(value)}
                 />
 
                 {/* Role Distribution */}

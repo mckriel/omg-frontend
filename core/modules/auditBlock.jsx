@@ -13,6 +13,9 @@ import Box from '@mui/material/Box'
 import { visuallyHidden } from '@mui/utils'
 import Badge from '@mui/material/Badge'
 import Tooltip from '@mui/material/Tooltip'
+import TextField from '@mui/material/TextField'
+import InputAdornment from '@mui/material/InputAdornment'
+import SearchIcon from '@mui/icons-material/Search'
 
 import config from '@/app.config.js'
 
@@ -50,14 +53,14 @@ const processTierItems = (tierSets) => {
         )
     }
 
-    const { season1, season2 } = tierSets;
+    const { season2, season3 } = tierSets;
     
     return (
         <Tooltip 
-            title={`Season 1: ${season1}/5 | Season 2: ${season2}/5`} 
+            title={`Season 2: ${season2}/5 | Season 3: ${season3}/5`} 
             placement="top"
         >
-            <span>{`${season1}/5 | ${season2}/5`}</span>
+            <span>{`${season2}/5 | ${season3}/5`}</span>
         </Tooltip>
     )
 }
@@ -106,15 +109,13 @@ const processHasCloak = (missingCloak) => {
 
 const headCells = [
     { id: 'avatar', label: '', sortable: false, width: 120 },
-    { id: 'itemlevel', label: 'ILvL', sortable: true, width: 50 },
+    { id: 'itemlevel', label: 'ILvL', sortable: false, width: 50 },
     { id: 'name', label: 'Name & Spec', sortable: true, width: 240 },
     { id: 'guildRank', label: 'Guild Rank', sortable: false },
-    { id: 'score', label: 'M+ Score', sortable: true },
-    { id: 'pvp', label: 'PvP Rating', sortable: true },
     { id: 'enchants', label: 'Missing Enchants', sortable: false },
     { id: 'hasWaist', label: 'Waist', sortable: false },
     { id: 'hasCloak', label: 'Cloak', sortable: false },
-    { id: 'tier', label: 'Tier Sets (S1|S2)', sortable: false },
+    { id: 'tier', label: 'Tier Sets (S2|S3)', sortable: false },
     { id: 'locked', label: 'Locked', sortable: false },
 ]
 
@@ -208,7 +209,7 @@ const getStatDifference = (current, stats) => {
     }
 }
 
-const AuditBlock = ({ data, name, hideControls }) => {
+const AuditBlock = ({ data, name, hideControls, searchFilter, onSearchChange }) => {
     if (!data[name]?.length && name !== 'locked') {
         return null
     }
@@ -260,7 +261,19 @@ const AuditBlock = ({ data, name, hideControls }) => {
         }
     }
 
-    const sortedData = renderData.sort(getComparator(order, orderBy))
+    // Filter data based on search
+    const filteredData = renderData.filter(player => {
+        if (!searchFilter || searchFilter === '') return true
+        const searchLower = searchFilter.toLowerCase()
+        return (
+            player.name?.toLowerCase().includes(searchLower) ||
+            player.spec?.toLowerCase().includes(searchLower) ||
+            player.class?.toLowerCase().includes(searchLower) ||
+            (GUILLD_RANKS[player.guildRank] || '').toLowerCase().includes(searchLower)
+        )
+    })
+
+    const sortedData = filteredData.sort(getComparator(order, orderBy))
 
     return (
         <Paper sx={{ width: '100%', mb: 2 }}>
@@ -365,101 +378,6 @@ const AuditBlock = ({ data, name, hideControls }) => {
                                         {GUILLD_RANKS[item.guildRank] || item.guildRank}
                                     </TableCell>
                                     <TableCell>
-                                        {item.stats ? (
-                                            <Badge
-                                                badgeContent={(() => {
-                                                    const diff =
-                                                        getStatDifference(
-                                                            item.itemLevel,
-                                                            item.stats
-                                                        )
-                                                    if (!diff) return null
-                                                    const current =
-                                                        Math.round(item.mplus) || 0
-                                                    const change = Math.round(
-                                                        current -
-                                                            diff.data.mplus
-                                                    )
-                                                    return change === 0
-                                                        ? null
-                                                        : change > 0
-                                                          ? `+${change}`
-                                                          : change
-                                                })()}
-                                                color={(() => {
-                                                    const diff =
-                                                        getStatDifference(
-                                                            item.itemLevel,
-                                                            item.stats
-                                                        )
-                                                    if (!diff) return 'default'
-                                                    const current =
-                                                        Math.round(item.mplus) || 0
-                                                    const change =
-                                                        current -
-                                                        diff.data.mplus
-                                                    return change > 0
-                                                        ? 'success'
-                                                        : change < 0
-                                                          ? 'error'
-                                                          : 'default'
-                                                })()}
-                                            >
-                                                <span>
-                                                    {Math.round(item.mplus) || 0}
-                                                </span>
-                                            </Badge>
-                                        ) : (
-                                            Math.round(item.mplus) || 0
-                                        )}
-                                    </TableCell>
-                                    <TableCell>
-                                        {item.stats ? (
-                                            <Badge
-                                                badgeContent={(() => {
-                                                    const diff =
-                                                        getStatDifference(
-                                                            item.itemLevel,
-                                                            item.stats
-                                                        )
-                                                    if (!diff) return null
-                                                    const current =
-                                                        item.pvp || 0
-                                                    const change =
-                                                        current - diff.data.pvp
-                                                    return change === 0
-                                                        ? null
-                                                        : change > 0
-                                                          ? `+${change}`
-                                                          : change
-                                                })()}
-                                                color={(() => {
-                                                    const diff =
-                                                        getStatDifference(
-                                                            item.itemLevel,
-                                                            item.stats
-                                                        )
-                                                    if (!diff) return 'default'
-                                                    const current =
-                                                        item.pvp || 0
-                                                    const change =
-                                                        current - diff.data.pvp
-                                                    return change > 0
-                                                        ? 'success'
-                                                        : change < 0
-                                                          ? 'error'
-                                                          : 'default'
-                                                })()}
-                                            >
-                                                <span>
-                                                    {item.pvp || 0}
-                                                </span>
-                                            </Badge>
-                                        ) : (
-                                            item.pvp || 0
-                                        )}
-                                    </TableCell>
-                                    <TableCell>
                                         {processMissingEnchants(
                                             item.missingEnchants
                                         )}
@@ -481,7 +399,7 @@ const AuditBlock = ({ data, name, hideControls }) => {
                                                     fontSize: '0.875rem',
                                                     padding: '8px'
                                                 }}>
-                                                    {item.lockedTooltipString}
+                                                    {item.lockedTooltipString || 'No lockout information available'}
                                                 </div>
                                             }
                                             placement="top"
@@ -504,7 +422,7 @@ const AuditBlock = ({ data, name, hideControls }) => {
                                                 cursor: 'help',
                                                 borderBottom: '1px dotted'
                                             }}>
-                                                {item.lockedToString}
+                                                {item.lockedToString || 'None'}
                                             </span>
                                         </Tooltip>
                                     </TableCell>

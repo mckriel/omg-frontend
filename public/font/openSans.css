@@ -1,0 +1,39 @@
+@font-face {
+    font-family: 'Open Sans';
+    font-weight: 300;
+    font-style: normal;
+    font-display: swap;
+    src: url(https://blz-contentstack-assets.akamaized.net/v3/assets/blt72f16e066f85e164/bltd4bd32df33514a17/5fbd9b1d8acca34834e64717/openSans-300-normal.woff) format('woff');
+}
+
+@font-face {
+    font-family: 'Open Sans';
+    font-weight: 400;
+    font-style: normal;
+    font-display: swap;
+    src: url(https://blz-contentstack-assets.akamaized.net/v3/assets/blt72f16e066f85e164/bltea0d5575e9b92a19/5fbd9b4a21b96a46dc51a9fa/openSans-400-normal.woff) format('woff');
+}
+
+@font-face {
+    font-family: 'Open Sans';
+    font-weight: 400;
+    font-style: italic;
+    font-display: swap;
+    src: url(https://blz-contentstack-assets.akamaized.net/v3/assets/blt72f16e066f85e164/blt88507068dca91557/5fbd9c030100b746db954000/openSans-400-italic.woff) format('woff');
+}
+
+@font-face {
+    font-family: 'Open Sans';
+    font-weight: 600;
+    font-style: normal;
+    font-display: swap;
+    src: url(https://blz-contentstack-assets.akamaized.net/v3/assets/blt72f16e066f85e164/blt24a0e58ff3000b6d/5fbd9c7346cf5a5635c5d428/openSans-600-normal.woff) format('woff');
+}
+
+@font-face {
+    font-family: 'Open Sans';
+    font-weight: 700;
+    font-style: normal;
+    font-display: swap;
+    src: url(https://blz-contentstack-assets.akamaized.net/v3/assets/blt72f16e066f85e164/blt48b417ac9e4452d4/5fbd9ec1a9e913483b74d597/openSans-700-normal.woff) format('woff');
+}

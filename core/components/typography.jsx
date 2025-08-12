@@ -4,9 +4,12 @@ import { jockeyone, systemui } from '@/app/fonts'
 
 import './scss/typo.scss'
 
+// Use Blizzard fonts for all components
+const blizzardFont = 'blizzard-font-class'
+
 export const SocialText = ({ children }) => {
     return (
-        <span className={`${jockeyone.className} socialText`}>{children}</span>
+        <span className={`${blizzardFont} socialText`}>{children}</span>
     )
 }
 
@@ -17,7 +20,7 @@ export const MultiColorHeadingH1 = ({
     goFancy,
 }) => {
     return (
-        <h1 className={`${jockeyone.className} primaryTitle`}>
+        <h1 className={`${blizzardFont} primaryTitle`}>
             <span>
                 {highlightText && (
                     <span className={` ${goFancy ? 'goFancy' : ''}`}>
@@ -68,7 +71,7 @@ export const Span = ({
 
 export const Button = ({ children, variant = 'primaryButton' }) => {
     return (
-        <span className={`${jockeyone.className} ${variant}`}>{children}</span>
+        <span className={`${blizzardFont} ${variant}`}>{children}</span>
     )
 }
 export const ButtonEle = ({
@@ -79,7 +82,7 @@ export const ButtonEle = ({
 }) => {
     return (
         <span
-            className={`${jockeyone.className} ${variant} ${className}`}
+            className={`${blizzardFont} ${variant} ${className}`}
             onClick={onClick}
         >
             {children}
@@ -91,7 +94,7 @@ export const CardTitle = ({ children, className = '', onClick = () => {} }) => {
     return (
         <h3
             onClick={onClick}
-            className={`${jockeyone.className} cardTitle ${className}`}
+            className={`${blizzardFont} cardTitle ${className}`}
         >
             {children}
         </h3>
@@ -99,18 +102,18 @@ export const CardTitle = ({ children, className = '', onClick = () => {} }) => {
 }
 
 export const OrElement = ({}) => {
-    return <div className={`${jockeyone.className} orElement`}>or</div>
+    return <div className={`${blizzardFont} orElement`}>or</div>
 }
 
 export const H3 = ({ children }) => {
     return (
-        <h3 className={`${jockeyone.className} sectionHeading`}>{children}</h3>
+        <h3 className={`${blizzardFont} sectionHeading`}>{children}</h3>
     )
 }
 
 export const H4 = ({ children }) => {
     return (
-        <h4 className={`${jockeyone.className} sectionSubHeading`}>
+        <h4 className={`${blizzardFont} sectionSubHeading`}>
             {children}
         </h4>
     )

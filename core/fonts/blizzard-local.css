@@ -1,0 +1,61 @@
+/* Blizzard Official Fonts - Complete Weight Range (Local Files) */
+
+@font-face {
+    font-family: 'SemplicitaPro';
+    font-weight: 300;
+    font-style: normal;
+    font-display: swap;
+    src: url('/font/SemplicitaPro-Light.otf') format('opentype');
+}
+
+@font-face {
+    font-family: 'SemplicitaPro';
+    font-weight: 400;
+    font-style: normal;
+    font-display: swap;
+    src: url('/font/SemplicitaPro-Regular.otf') format('opentype');
+}
+
+@font-face {
+    font-family: 'SemplicitaPro';
+    font-weight: 500;
+    font-style: normal;
+    font-display: swap;
+    src: url('/font/SemplicitaPro-Medium.otf') format('opentype');
+}
+
+@font-face {
+    font-family: 'SemplicitaPro';
+    font-weight: 600;
+    font-style: normal;
+    font-display: swap;
+    src: url('/font/SemplicitaPro-Semibold.otf') format('opentype');
+}
+
+@font-face {
+    font-family: 'SemplicitaPro';
+    font-weight: 700;
+    font-style: normal;
+    font-display: swap;
+    src: url('/font/SemplicitaPro-Bold_0.otf') format('opentype');
+}
+
+@font-face {
+    font-family: 'SemplicitaPro';
+    font-weight: 800;
+    font-style: normal;
+    font-display: swap;
+    src: url('/font/SemplicitaPro-Bold_0.otf') format('opentype');
+}
+
+/* CSS Variables for consistent font usage */
+:root {
+  --font-blizzard-primary: 'SemplicitaPro', 'Open Sans', system-ui, -apple-system, sans-serif;
+  --font-blizzard-body: 'SemplicitaPro', 'Open Sans', system-ui, -apple-system, sans-serif;
+  --font-blizzard-heading: 'SemplicitaPro', 'Open Sans', system-ui, -apple-system, sans-serif;
+}
+
+/* Global Blizzard font class for components */
+.blizzard-font-class {
+  font-family: var(--font-blizzard-primary) !important;
+}

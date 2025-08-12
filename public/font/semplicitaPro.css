@@ -1,0 +1,47 @@
+@font-face {
+    font-family: SemplicitaPro;
+    font-weight: 300;
+    font-style: normal;
+    font-display: swap;
+    src: url(https://blz-contentstack-assets.akamaized.net/v3/assets/blt72f16e066f85e164/bltb489810d3dfd1cde/652f278d7917355fa98b7ba8/SemplicitaPro-Light.otf) format('opentype');
+}
+
+@font-face {
+    font-family: SemplicitaPro;
+    font-weight: 400;
+    font-style: normal;
+    font-display: swap;
+    src: url(https://blz-contentstack-assets.akamaized.net/v3/assets/blt72f16e066f85e164/bltd0abdc3109028507/652f27982c84c8422e881c4e/SemplicitaPro_0.otf) format('opentype');
+}
+
+@font-face {
+    font-family: SemplicitaPro;
+    font-weight: 400;
+    font-style: italic;
+    font-display: swap;
+    src: url(https://blz-contentstack-assets.akamaized.net/v3/assets/https://assets.blz-contentstack.com/v3/assets/blt72f16e066f85e164/blt42ed34c7d03d6ae8/652f27ce5ce6780d95b235ec/SemplicitaPro-Italic.otf) format('opentype');
+}
+
+@font-face {
+    font-family: SemplicitaPro;
+    font-weight: 500;
+    font-style: normal;
+    font-display: swap;
+    src: url(https://blz-contentstack-assets.akamaized.net/v3/assets/blt72f16e066f85e164/blt835ad3cbc7db584c/652f27ac432b524dbf482552/SemplicitaPro-Medium.otf) format('opentype');
+}
+
+@font-face {
+    font-family: SemplicitaPro;
+    font-weight: 600;
+    font-style: normal;
+    font-display: swap;
+    src: url(https://blz-contentstack-assets.akamaized.net/v3/assets/blt72f16e066f85e164/blt22ae9b6ec750ddcf/652f27bbb057fa8b5a8f9180/SemplicitaPro-Semibold.otf) format('opentype');
+}
+
+@font-face {
+    font-family: SemplicitaPro;
+    font-weight: 700;
+    font-style: normal;
+    font-display: swap;
+    src: url(https://blz-contentstack-assets.akamaized.net/v3/assets/blt72f16e066f85e164/blt1a482b92e9d2ec1c/652f27c179173589148b7bac/SemplicitaPro-Bold_0.otf) format('opentype');
+}

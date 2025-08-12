@@ -2,14 +2,14 @@
 
 .crm-nav-root {
   width: 100%;
-  font-family: var(--font-arimo, 'Inter', 'Segoe UI', Arial, sans-serif);
+  font-family: var(--font-blizzard-primary);
   background: #110d17;
 }
 
 // Top bar: Logo
 .crm-logo-bar {
   width: 100%;
-  background: #16131c;
+  background: #000000;
   border-bottom: 1px solid #151f1d;
   box-shadow: none;
   position: relative;
@@ -18,23 +18,124 @@
 .crm-logo-bar-inner {
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: center;
   max-width: 1400px;
   margin: 0 auto;
-  padding: 0.5rem 2rem;
+  padding: 1rem 2rem;
+  position: relative;
 }
 .crm-logo-link {
-  font-size: 1.5rem;
+  font-size: 1.8rem;
   font-weight: 700;
   color: #ffffff;
   padding: 18px 0;
   text-decoration: none;
   letter-spacing: 1px;
   text-transform: uppercase;
-  font-family: var(--font-oswald, inherit);
+  font-family: var(--font-blizzard-primary);
+}
+
+// Guild header container styling - vertical layout
+.guild-header-container-vertical {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 8px;
+}
+
+.guild-emblem-image-centered {
+  width: 150px;
+  height: 150px;
+  object-fit: contain;
+  
+  &.mobile {
+    width: 80px;
+    height: 80px;
+  }
+}
+
+.guild-name-text-centered {
+  color: inherit;
+  font-size: inherit;
+  font-weight: inherit;
+  letter-spacing: inherit;
+  text-transform: inherit;
+  font-family: inherit;
+}
+
+// Old horizontal container for mobile
+.guild-header-container {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  
+  &.mobile {
+    gap: 8px;
+  }
+}
+
+.guild-name-text {
+  color: inherit;
+  font-size: inherit;
+  font-weight: inherit;
+  letter-spacing: inherit;
+  text-transform: inherit;
+  font-family: inherit;
+}
+
+.guild-emblem-image {
+  width: 100px;
+  height: 100px;
+  object-fit: contain;
+  
+  &.mobile {
+    width: 80px;
+    height: 80px;
+  }
+}
+
+.discord-link {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 12px;
+  border-radius: 6px;
+  transition: all 0.2s ease;
+  text-decoration: none;
+  background-color: #5865f2;
+  
+  &:hover {
+    background-color: #7289da;
+    transform: scale(1.02);
+    .discord-text {
+      color: #ffffff;
+    }
+  }
+}
+
+.discord-text {
+  color: #ffffff;
+  font-size: 0.8rem;
+  font-weight: 700;
+  white-space: nowrap;
+  transition: color 0.2s ease;
+  font-family: var(--font-blizzard-primary);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.discord-icon {
+  width: 24px;
+  height: 24px;
+  object-fit: contain;
 }
 .crm-mobile-menu-btn-wrapper {
   display: none;
+  position: absolute;
+  right: 2rem;
+  top: 50%;
+  transform: translateY(-50%);
 }
 
 // Second bar: Horizontal nav
@@ -47,11 +148,22 @@
 .crm-nav-bar {
   display: flex;
   align-items: center;
+  justify-content: space-between;
   max-width: 1400px;
   margin: 0 auto;
   padding: 6px 2rem;
   min-height: 48px;
+}
+
+.crm-nav-left {
+  display: flex;
+  align-items: center;
   gap: 1rem;
+}
+
+.crm-nav-right {
+  display: flex;
+  align-items: center;
 }
 .crm-nav-link {
   text-decoration: none;
@@ -114,6 +226,18 @@
   .crm-mobile-menu-btn-wrapper {
     display: block;
   }
+  .crm-logo-bar-inner {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+  }
+  .discord-link {
+    margin-right: 8px;
+  }
+  .discord-text {
+    display: none; // Hide text on mobile to save space
+  }
 }
 @media (min-width: 1201px) {
   .nav-mobile-drawer {
@@ -136,10 +260,14 @@
   width: 180px !important;
   height: auto !important;
   color: #8dd52b;
-  font-family: var(--font-oswald, inherit);
+  font-family: var(--font-blizzard-primary);
   font-size: 1.2rem;
   font-weight: 700;
   margin-bottom: 1.5rem;
+  
+  .guild-name-text {
+    color: #8dd52b;
+  }
 }
 
 // Mobile nav list
