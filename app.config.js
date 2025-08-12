@@ -26,12 +26,12 @@ const data = {
         "defaultItemLevel": 645
     },
     "GUILLD_RANKS": [
-        "Guild Lead",
+        "Guild Master",
         "Officer",
         "Officer Alt",
         "Mythic Raider",
-        "Mythic Raider Alt",
         "Raider",
+        "Mythic Raider Alt",
         "Trial Raider",
         "Member",
         "Alt",

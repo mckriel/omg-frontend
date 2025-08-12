@@ -2,6 +2,8 @@ import { NextResponse } from 'next/server';
 
 const BACKEND_URL =  process.env.NEXT_PUBLIC_BACKEND_URL;
 
+export const dynamic = 'force-dynamic'
+
 export async function GET(request) {
   try {
     const { searchParams } = new URL(request.url);
@@ -11,10 +13,7 @@ export async function GET(request) {
     const url = `${BACKEND_URL}/data/filtered${queryString ? `?${queryString}` : ''}`;
     
     const response = await fetch(url, {
-      next: { 
-        revalidate: 600, // Cache for 10 minutes
-        tags: ['guild-data', 'guild-stats']
-      }
+      cache: 'no-store' // Dynamic route needs fresh data
     });
     
     if (!response.ok) {
@@ -24,7 +23,7 @@ export async function GET(request) {
     const data = await response.json();
     return NextResponse.json(data, {
       headers: {
-        'Cache-Control': 'public, s-maxage=600, stale-while-revalidate=300'
+        'Cache-Control': 'no-store, must-revalidate'
       }
     });
   } catch (error) {

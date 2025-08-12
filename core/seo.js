@@ -1,5 +1,5 @@
 const seo = {
-    title: `${process.env.NEXT_PUBLIC_GUILD_NAME} | EU World of Warcraft Guild`,
+    title: 'One More Game | World of Warcraft Guild',
     description: '',
     keywords: `World of Warcraft, WoW, EU, ${process.env.NEXT_PUBLIC_GUILD_REALM}, ${process.env.NEXT_PUBLIC_GUILD_NAME}, Mythic Raiding, War Within, Season 2, WoW Guild, Raid Progression`,
     metadataBase: new URL(process.env.NEXT_PUBLIC_BASE_URL),
@@ -15,7 +15,7 @@ const seo = {
         telephone: false,
     },
     openGraph: {
-        title: `${process.env.NEXT_PUBLIC_GUILD_NAME} | EU World of Warcraft Guild`,
+        title: 'One More Game | World of Warcraft Guild',
         description: '',
         url: process.env.NEXT_PUBLIC_BASE_URL,
         siteName: process.env.NEXT_PUBLIC_GUILD_NAME,
@@ -32,7 +32,7 @@ const seo = {
     },
     twitter: {
         card: 'summary_large_image',
-        title: `${process.env.NEXT_PUBLIC_GUILD_NAME} | EU World of Warcraft Guild`,
+        title: 'One More Game | World of Warcraft Guild',
         description: '',
         images: ['/images/twitter-image.jpg'],
     },

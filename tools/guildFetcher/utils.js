@@ -153,8 +153,13 @@ const filterSearch = (
 const buildInitialClassList = (data) => {
     const classes = []
 
+    // Ensure data is an array and not null/undefined
+    if (!data || !Array.isArray(data)) {
+        return classes
+    }
+
     data.forEach((character) => {
-        if (classes.indexOf(character.class) === -1) {
+        if (character?.class && classes.indexOf(character.class) === -1) {
             classes.push(character.class)
         }
     })

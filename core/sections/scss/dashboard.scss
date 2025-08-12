@@ -95,11 +95,12 @@
 }
 
 // Center content in specific audit table columns
-.MuiTableBody-root .MuiTableRow-root .MuiTableCell-root:nth-child(5), // Missing Enchants
-.MuiTableBody-root .MuiTableRow-root .MuiTableCell-root:nth-child(6), // Waist
-.MuiTableBody-root .MuiTableRow-root .MuiTableCell-root:nth-child(7), // Cloak
-.MuiTableBody-root .MuiTableRow-root .MuiTableCell-root:nth-child(8), // Tier Sets
-.MuiTableBody-root .MuiTableRow-root .MuiTableCell-root:nth-child(9)  // Locked
+.MuiTableBody-root .MuiTableRow-root .MuiTableCell-root:nth-child(4), // Links
+.MuiTableBody-root .MuiTableRow-root .MuiTableCell-root:nth-child(6), // Missing Enchants
+.MuiTableBody-root .MuiTableRow-root .MuiTableCell-root:nth-child(7), // Waist
+.MuiTableBody-root .MuiTableRow-root .MuiTableCell-root:nth-child(8), // Cloak
+.MuiTableBody-root .MuiTableRow-root .MuiTableCell-root:nth-child(9), // Tier Sets
+.MuiTableBody-root .MuiTableRow-root .MuiTableCell-root:nth-child(10)  // Locked
 {
   text-align: center;
   white-space: normal;
@@ -108,17 +109,18 @@
 }
 
 // Center headers for the same columns
-.MuiTableHead-root .MuiTableRow-root .MuiTableCell-root:nth-child(5), // Missing Enchants
-.MuiTableHead-root .MuiTableRow-root .MuiTableCell-root:nth-child(6), // Waist
-.MuiTableHead-root .MuiTableRow-root .MuiTableCell-root:nth-child(7), // Cloak
-.MuiTableHead-root .MuiTableRow-root .MuiTableCell-root:nth-child(8), // Tier Sets
-.MuiTableHead-root .MuiTableRow-root .MuiTableCell-root:nth-child(9)  // Locked
+.MuiTableHead-root .MuiTableRow-root .MuiTableCell-root:nth-child(4), // Links
+.MuiTableHead-root .MuiTableRow-root .MuiTableCell-root:nth-child(6), // Missing Enchants
+.MuiTableHead-root .MuiTableRow-root .MuiTableCell-root:nth-child(7), // Waist
+.MuiTableHead-root .MuiTableRow-root .MuiTableCell-root:nth-child(8), // Cloak
+.MuiTableHead-root .MuiTableRow-root .MuiTableCell-root:nth-child(9), // Tier Sets
+.MuiTableHead-root .MuiTableRow-root .MuiTableCell-root:nth-child(10)  // Locked
 {
   text-align: center;
 }
 
 // Specific styling for locked column to ensure content displays
-.MuiTableBody-root .MuiTableRow-root .MuiTableCell-root:nth-child(9) {
+.MuiTableBody-root .MuiTableRow-root .MuiTableCell-root:nth-child(10) {
   min-width: 120px;
   max-width: 180px;
   overflow: visible;

@@ -53,14 +53,14 @@ const processTierItems = (tierSets) => {
         )
     }
 
-    const { season2, season3 } = tierSets;
+    const { season3 } = tierSets;
     
     return (
         <Tooltip 
-            title={`Season 2: ${season2}/5 | Season 3: ${season3}/5`} 
+            title={`Season 3: ${season3 || 0}/5 pieces`} 
             placement="top"
         >
-            <span>{`${season2}/5 | ${season3}/5`}</span>
+            <span>{`${season3 || 0}/5`}</span>
         </Tooltip>
     )
 }
@@ -110,12 +110,13 @@ const processHasCloak = (missingCloak) => {
 const headCells = [
     { id: 'avatar', label: '', sortable: false, width: 120 },
     { id: 'itemlevel', label: 'ILvL', sortable: false, width: 50 },
-    { id: 'name', label: 'Name & Spec', sortable: true, width: 240 },
+    { id: 'name', label: 'Name & Spec', sortable: true },
+    { id: 'links', label: 'Links', sortable: false, width: 80 },
     { id: 'guildRank', label: 'Guild Rank', sortable: false },
     { id: 'enchants', label: 'Missing Enchants', sortable: false },
     { id: 'hasWaist', label: 'Waist', sortable: false },
     { id: 'hasCloak', label: 'Cloak', sortable: false },
-    { id: 'tier', label: 'Tier Sets (S2|S3)', sortable: false },
+    { id: 'tier', label: 'Tier Pieces', sortable: false },
     { id: 'locked', label: 'Locked', sortable: false },
 ]
 
@@ -138,6 +139,7 @@ function EnhancedTableHead({ order, orderBy, onRequestSort, officerList }) {
                             'tier',
                             'locked',
                             'lastUpdated',
+                            'links',
                         ].includes(headCell.id)
                     ) {
                         return null
@@ -148,7 +150,11 @@ function EnhancedTableHead({ order, orderBy, onRequestSort, officerList }) {
                             sortDirection={
                                 orderBy === headCell.id ? order : false
                             }
-                            sx={{ width: headCell.width }}
+                            sx={{ 
+                                width: headCell.width,
+                                fontWeight: 'bold',
+                                fontFamily: 'var(--font-blizzard-primary)'
+                            }}
                         >
                             {headCell.sortable ? (
                                 <TableSortLabel
@@ -362,7 +368,7 @@ const AuditBlock = ({ data, name, hideControls, searchFilter, onSearchChange }) 
                                             item.itemLevel
                                         )}
                                     </TableCell>
-                                    <TableCell sx={{ width: 240 }}>
+                                    <TableCell>
                                         <div
                                             className={`name ${item.class}`}
                                         >
@@ -374,7 +380,59 @@ const AuditBlock = ({ data, name, hideControls, searchFilter, onSearchChange }) 
                                             </P>
                                         </div>
                                     </TableCell>
-                                    <TableCell>
+                                    <TableCell sx={{ width: 80, textAlign: 'center' }}>
+                                        <div style={{ display: 'flex', gap: '8px', justifyContent: 'center', alignItems: 'center' }}>
+                                            <a
+                                                href={`https://www.warcraftlogs.com/character/eu/${item.server}/${item.name.toLowerCase()}`}
+                                                target="_blank"
+                                                rel="noopener noreferrer"
+                                                style={{
+                                                    display: 'inline-flex',
+                                                    alignItems: 'center',
+                                                    textDecoration: 'none',
+                                                    opacity: 0.7,
+                                                    transition: 'opacity 0.2s ease'
+                                                }}
+                                                onMouseEnter={(e) => e.currentTarget.style.opacity = 1}
+                                                onMouseLeave={(e) => e.currentTarget.style.opacity = 0.7}
+                                            >
+                                                <img 
+                                                    src="/images/wcl.png" 
+                                                    alt="Warcraft Logs" 
+                                                    style={{
+                                                        width: '20px',
+                                                        height: '20px',
+                                                        objectFit: 'contain'
+                                                    }}
+                                                />
+                                            </a>
+                                            <a
+                                                href={`https://raider.io/characters/eu/${item.server}/${item.name}`}
+                                                target="_blank"
+                                                rel="noopener noreferrer"
+                                                style={{
+                                                    display: 'inline-flex',
+                                                    alignItems: 'center',
+                                                    textDecoration: 'none',
+                                                    opacity: 0.7,
+                                                    transition: 'opacity 0.2s ease'
+                                                }}
+                                                onMouseEnter={(e) => e.currentTarget.style.opacity = 1}
+                                                onMouseLeave={(e) => e.currentTarget.style.opacity = 0.7}
+                                            >
+                                                <img 
+                                                    src="/images/raiderio.png" 
+                                                    alt="Raider.IO" 
+                                                    style={{
+                                                        width: '26px',
+                                                        height: '26px',
+                                                        objectFit: 'contain'
+                                                    }}
+                                                />
+                                            </a>
+                                        </div>
+                                    </TableCell>
+                                    <TableCell sx={{ fontFamily: 'var(--font-blizzard-primary)' }}>
                                         {GUILLD_RANKS[item.guildRank] || item.guildRank}
                                     </TableCell>
                                     <TableCell>

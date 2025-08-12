@@ -25,6 +25,9 @@ import SwordIcon from '@mui/icons-material/MyLocation'
 import TextField from '@mui/material/TextField'
 import InputAdornment from '@mui/material/InputAdornment'
 import SearchIcon from '@mui/icons-material/Search'
+import IconButton from '@mui/material/IconButton'
+import ScrollIcon from '@mui/icons-material/Description'
+import Tooltip from '@mui/material/Tooltip'
 
 
 import './scss/dashboard.scss'
@@ -35,6 +38,8 @@ import RoleDistribution from '@/core/components/RoleDistribution'
 const Dashboard = ({ guildData }) => {
     const [isDataLoaded, setIsDataLoaded] = React.useState(false)
     const [searchFilter, setSearchFilter] = React.useState('')
+    const [showMissingEnchantsOnly, setShowMissingEnchantsOnly] = React.useState(false)
+    const [showLockedOnly, setShowLockedOnly] = React.useState(false)
     const [query, setQuery] = React.useState('')
     const [classFilter, setClassFilter] = React.useState([])
     const [rankFilter, setRankFilter] = React.useState('all')
@@ -132,10 +137,25 @@ const Dashboard = ({ guildData }) => {
 
         setIsDataLoaded(true)
 
+        // Apply filters if active
+        let filteredRaidReadyPlayers = raidReadyPlayersWithLockouts;
+        
+        if (showMissingEnchantsOnly) {
+            filteredRaidReadyPlayers = filteredRaidReadyPlayers.filter(player => 
+                player.missingEnchants && player.missingEnchants.length > 0
+            );
+        }
+        
+        if (showLockedOnly) {
+            filteredRaidReadyPlayers = filteredRaidReadyPlayers.filter(player => 
+                player.lockedToString && player.lockedToString !== 'None'
+            );
+        }
+
         return {
             totalMembers: allPlayers.length,
             raidReadyCount: raidReadyPlayers.length,
-            raidReadyPlayersData: raidReadyPlayersWithLockouts,
+            raidReadyPlayersData: filteredRaidReadyPlayers,
             missingEnchants: missingEnchants.all || 0,
             raidLocked: totalLocked,
             avgTopMplus: avgTopMplus,
@@ -147,7 +167,7 @@ const Dashboard = ({ guildData }) => {
             healers: raidReadyHealers.length,
             dps: raidReadyDPS.length,
         }
-    }, [auditData, guildData])
+    }, [auditData, guildData, showMissingEnchantsOnly, showLockedOnly])
 
     if (!isDataLoaded) {
         return null
@@ -239,40 +259,73 @@ const Dashboard = ({ guildData }) => {
                     >
                         Raid Roster
                     </Typography>
-                    <TextField
-                        size="small"
-                        placeholder="Search players..."
-                        value={searchFilter}
-                        onChange={(e) => setSearchFilter(e.target.value)}
-                        InputProps={{
-                            startAdornment: (
-                                <InputAdornment position="start">
-                                    <SearchIcon />
-                                </InputAdornment>
-                            ),
-                        }}
-                        sx={{ 
-                            width: 300,
-                            mt: 4,
-                            '& .MuiOutlinedInput-root': {
-                                backgroundColor: '#2a2a2a',
-                                fontFamily: 'var(--font-blizzard-primary)',
-                                '& fieldset': {
-                                    border: 'none',
-                                },
-                                '&:hover fieldset': {
-                                    border: 'none',
-                                },
-                                '&.Mui-focused fieldset': {
-                                    border: 'none',
-                                },
-                                '& input::placeholder': {
+                    <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mt: 4 }}>
+                        <Tooltip title="Show only players with missing enchants">
+                            <IconButton
+                                onClick={() => setShowMissingEnchantsOnly(!showMissingEnchantsOnly)}
+                                sx={{
+                                    backgroundColor: showMissingEnchantsOnly ? '#4a4a4a' : '#2a2a2a',
+                                    color: showMissingEnchantsOnly ? '#ffa726' : '#fff',
+                                    '&:hover': {
+                                        backgroundColor: showMissingEnchantsOnly ? '#5a5a5a' : '#3a3a3a',
+                                    },
+                                    transition: 'all 0.2s ease',
+                                    borderRadius: 1,
+                                }}
+                            >
+                                <ScrollIcon />
+                            </IconButton>
+                        </Tooltip>
+                        <Tooltip title="Show only players with raid lockouts">
+                            <IconButton
+                                onClick={() => setShowLockedOnly(!showLockedOnly)}
+                                sx={{
+                                    backgroundColor: showLockedOnly ? '#4a4a4a' : '#2a2a2a',
+                                    color: showLockedOnly ? '#ffa726' : '#fff',
+                                    '&:hover': {
+                                        backgroundColor: showLockedOnly ? '#5a5a5a' : '#3a3a3a',
+                                    },
+                                    transition: 'all 0.2s ease',
+                                    borderRadius: 1,
+                                }}
+                            >
+                                <LockIcon />
+                            </IconButton>
+                        </Tooltip>
+                        <TextField
+                            size="small"
+                            placeholder="Search players..."
+                            value={searchFilter}
+                            onChange={(e) => setSearchFilter(e.target.value)}
+                            InputProps={{
+                                startAdornment: (
+                                    <InputAdornment position="start">
+                                        <SearchIcon />
+                                    </InputAdornment>
+                                ),
+                            }}
+                            sx={{ 
+                                width: 300,
+                                '& .MuiOutlinedInput-root': {
+                                    backgroundColor: '#2a2a2a',
                                     fontFamily: 'var(--font-blizzard-primary)',
-                                    opacity: 0.7,
-                                },
-                            }
-                        }}
-                    />
+                                    '& fieldset': {
+                                        border: 'none',
+                                    },
+                                    '&:hover fieldset': {
+                                        border: 'none',
+                                    },
+                                    '&.Mui-focused fieldset': {
+                                        border: 'none',
+                                    },
+                                    '& input::placeholder': {
+                                        fontFamily: 'var(--font-blizzard-primary)',
+                                        opacity: 0.7,
+                                    },
+                                }
+                            }}
+                        />
+                    </Box>
                 </Box>
                 <AuditBlock
                     data={{ all: data.raidReadyPlayersData }}

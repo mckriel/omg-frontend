@@ -35,8 +35,8 @@ const navigationItems = {
         label: 'OVERVIEW',
         items: [
             {
-                label: 'RAID',
-                path: '/raid',
+                label: 'RAID TEAM',
+                path: '/raid-team',
                 icon: DashboardIcon,
             },
             {
@@ -48,21 +48,6 @@ const navigationItems = {
                 label: 'AUDIT',
                 path: '/audit',
                 icon: AssessmentIcon,
-            },
-            {
-                label: 'ROSTER BUILDER',
-                path: '/roster',
-                icon: GroupAddIcon,
-            },
-            {
-                label: 'MRT TOOL',
-                path: '/mrt',
-                icon: PrecisionManufacturingIcon,
-            },
-            {
-                label: 'Signup',
-                path: '/season3',
-                icon: HowToRegIcon,
             },
         ],
     },
@@ -110,6 +95,38 @@ export default function Nav() {
                 ))}
             </div>
             <div className="crm-nav-right">
+                <a 
+                    href="https://www.warcraftlogs.com/guild/eu/sylvanas/one%20more%20game" 
+                    target="_blank" 
+                    rel="noopener noreferrer"
+                    style={{ 
+                        marginRight: '20px',
+                        display: 'flex',
+                        alignItems: 'center',
+                        textDecoration: 'none',
+                        background: 'transparent',
+                        transition: 'transform 0.2s ease',
+                        borderRadius: '4px',
+                        padding: '4px'
+                    }}
+                    onMouseEnter={(e) => {
+                        e.target.style.transform = 'scale(1.1)';
+                    }}
+                    onMouseLeave={(e) => {
+                        e.target.style.transform = 'scale(1)';
+                    }}
+                >
+                    <img 
+                        src="/images/wcl.png" 
+                        alt="Warcraft Logs" 
+                        style={{ 
+                            width: '32px',
+                            height: '32px',
+                            objectFit: 'contain',
+                            pointerEvents: 'none'
+                        }}
+                    />
+                </a>
                 <a 
                     href="https://discord.gg/z9JxvNQ5Zp" 
                     target="_blank" 
