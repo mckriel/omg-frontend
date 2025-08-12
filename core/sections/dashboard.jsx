@@ -107,14 +107,16 @@ const Dashboard = ({ guildData }) => {
             player.missingEnchants && player.missingEnchants.length > 0
         )
 
-        // Count raid-ready players (675+ ilvl) - simple version that was working
+        // Count raid-ready players (675+ ilvl AND guild rank 0-6)
         const raidReadyPlayers = allPlayers.filter(player => {
-            return player.itemLevel && player.itemLevel >= 675
+            return player.itemLevel && player.itemLevel >= 675 && 
+                   player.guildRank >= 0 && player.guildRank <= 6
         })
 
         // Get raid-ready players from processed auditData (includes lockout info)
         const raidReadyPlayersWithLockouts = auditData.all.filter(player => {
-            return player.itemLevel && player.itemLevel >= 675
+            return player.itemLevel && player.itemLevel >= 675 &&
+                   player.guildRank >= 0 && player.guildRank <= 6
         })
 
         // Calculate role counts from raid-ready players
