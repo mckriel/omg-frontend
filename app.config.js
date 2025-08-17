@@ -10,7 +10,7 @@ const data = {
     "MIN_CHECK_CAP": 600,
     "MAX_CHECK_CAP": 800,
     "MIN_TIER_ITEMLEVEL": 640,
-    "ENCHANTABLE_PIECES": ["WRIST", "LEGS", "FEET", "CHEST", "MAIN_HAND", "FINGER_1", "FINGER_2"],
+    "ENCHANTABLE_PIECES": ["BACK", "WRIST", "LEGS", "FEET", "CHEST", "MAIN_HAND", "FINGER_1", "FINGER_2"],
     "MAIN_RANKS": [0,1,2,3,4,5,6,7],
     "ALT_RANKS": [8,9,10],
     "TANKS": ["Blood", "Vengeance", "Guardian", "Brewmaster", "Protection"],
@@ -27,15 +27,15 @@ const data = {
     },
     "GUILLD_RANKS": [
         "Guild Master",
+        "Council Member",
         "Officer",
         "Officer Alt",
         "Mythic Raider",
-        "Raider",
-        "Mythic Raider Alt",
-        "Trial Raider",
-        "Member",
+        "Alt Raider",
+        "Raider Trial",
+        "Social Raider",
         "Alt",
-        "New Recruit"
+        "Social"
     ],
     "RESULTS_PAGINATION": {
         "MAX_ITEMS": 20

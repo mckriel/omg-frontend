@@ -1,0 +1,345 @@
+/* Modern 2025 Design System - WoW Theme */
+
+:root {
+    /* Shadcn/UI variables */
+    --background: 17 13 23; /* #110d17 */
+    --foreground: 220 218 218; /* #dcdada */
+    --card: 8 6 12; /* #08060c */
+    --card-foreground: 220 218 218;
+    --popover: 17 13 23;
+    --popover-foreground: 220 218 218;
+    --primary: 141 213 43; /* #8dd52b - WoW gold */
+    --primary-foreground: 17 13 23;
+    --secondary: 43 21 55; /* #2b1537 - WoW purple */
+    --secondary-foreground: 255 255 255;
+    --muted: 32 28 38;
+    --muted-foreground: 158 158 158;
+    --accent: 43 21 55;
+    --accent-foreground: 255 255 255;
+    --destructive: 239 68 68;
+    --destructive-foreground: 255 255 255;
+    --border: 39 39 42;
+    --input: 39 39 42;
+    --ring: 141 213 43;
+    --radius: 0.5rem;
+    
+    /* Custom WoW Lightning Dark variables */
+    --wow-purple: #2b1537;
+    --wow-purple-light: #3d1f4b;
+    --wow-purple-dark: #1f0f29;
+    --wow-gold: #8dd52b;
+    --wow-gold-light: #a8f73a;
+    --wow-gold-glow: rgba(141, 213, 43, 0.3);
+    --wow-dark: #110d17;
+    --wow-darker: #0a0612;
+    --wow-darkest: #050309;
+    --wow-glass: rgba(17, 13, 23, 0.85);
+    --wow-glass-light: rgba(43, 21, 55, 0.25);
+    --wow-glass-border: rgba(141, 213, 43, 0.25);
+    --wow-accent-gradient: linear-gradient(135deg, var(--wow-purple), var(--wow-purple-light));
+    --wow-gold-gradient: linear-gradient(135deg, var(--wow-gold), var(--wow-gold-light));
+  }
+
+.dark {
+  --background: 17 13 23;
+  --foreground: 220 218 218;
+  --card: 8 6 12;
+  --card-foreground: 220 218 218;
+  --popover: 17 13 23;
+  --popover-foreground: 220 218 218;
+  --primary: 141 213 43;
+  --primary-foreground: 17 13 23;
+  --secondary: 43 21 55;
+  --secondary-foreground: 255 255 255;
+  --muted: 32 28 38;
+  --muted-foreground: 158 158 158;
+  --accent: 43 21 55;
+  --accent-foreground: 255 255 255;
+  --destructive: 239 68 68;
+  --destructive-foreground: 255 255 255;
+  --border: 39 39 42;
+  --input: 39 39 42;
+  --ring: 141 213 43;
+}
+
+/* Glassmorphism utilities */
+.glass {
+  background: var(--wow-glass);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid var(--wow-glass-border);
+}
+
+.glass-header {
+  background: rgba(0, 0, 0, 0.8);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-bottom: 1px solid rgba(141, 213, 43, 0.15);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+}
+
+.glass-table {
+  background: rgba(17, 13, 23, 0.9);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(141, 213, 43, 0.2);
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+}
+
+.table-row-modern {
+  transition: all 0.3s ease;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.table-row-modern:hover {
+  background: rgba(141, 213, 43, 0.08);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 16px rgba(141, 213, 43, 0.15);
+}
+
+.table-header-modern {
+  background: rgba(0, 0, 0, 0.6);
+  color: var(--wow-gold);
+  font-weight: bold;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  border-bottom: 1px solid rgba(141, 213, 43, 0.3);
+}
+
+.table-cell-modern {
+  padding: 16px 12px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  font-family: var(--font-blizzard-primary);
+}
+
+/* Modern Card Components */
+.stat-card {
+  background: var(--wow-glass) !important;
+  backdrop-filter: blur(16px) !important;
+  -webkit-backdrop-filter: blur(16px) !important;
+  border: 1px solid var(--wow-glass-border) !important;
+  border-radius: 16px !important;
+  padding: 24px !important;
+  transition: all 0.3s ease !important;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3) !important;
+}
+
+.stat-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 40px rgba(141, 213, 43, 0.2), 0 8px 32px rgba(0, 0, 0, 0.4) !important;
+  border-color: rgba(141, 213, 43, 0.4) !important;
+}
+
+.stat-card-header {
+  display: flex !important;
+  align-items: center !important;
+  margin-bottom: 16px !important;
+}
+
+.stat-card-title {
+  color: var(--wow-gold) !important;
+  font-family: var(--font-blizzard-primary) !important;
+  font-weight: 700 !important;
+  text-transform: uppercase !important;
+  letter-spacing: 1px !important;
+}
+
+.stat-card-value {
+  color: white !important;
+  font-family: var(--font-blizzard-primary) !important;
+  font-weight: 800 !important;
+  margin-bottom: 8px !important;
+  text-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
+}
+
+.stat-card-description {
+  color: rgba(220, 218, 218, 0.8) !important;
+  font-family: var(--font-blizzard-primary) !important;
+  line-height: 1.5 !important;
+}
+
+/* Modern animations */
+.animate-glow {
+  animation: glow 2s ease-in-out infinite alternate;
+}
+
+@keyframes glow {
+  0% {
+    text-shadow: 0 0 10px var(--wow-gold), 0 0 20px var(--wow-gold);
+  }
+  100% {
+    text-shadow: 0 0 5px var(--wow-gold), 0 0 10px var(--wow-gold);
+  }
+}
+
+.hover-lift {
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.hover-lift:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+}
+
+/* Gaming-inspired effects */
+.neon-border {
+  border: 1px solid transparent;
+  background: linear-gradient(var(--wow-darker), var(--wow-darker)) padding-box,
+              linear-gradient(45deg, var(--wow-gold), var(--wow-purple)) border-box;
+  border-radius: 8px;
+}
+
+.discord-button {
+  background: linear-gradient(135deg, #5865f2, #7289da);
+  transition: all 0.3s ease;
+  border-radius: 8px;
+}
+
+.discord-button:hover {
+  background: linear-gradient(135deg, #7289da, #8da1e8);
+  transform: scale(1.05);
+  box-shadow: 0 0 20px rgba(88, 101, 242, 0.4);
+}
+
+/* Modern Button Components */
+.primary {
+  background: var(--wow-gold-gradient) !important;
+  border: 1px solid rgba(141, 213, 43, 0.4) !important;
+  border-radius: 12px !important;
+  padding: 16px 32px !important;
+  color: var(--wow-darker) !important;
+  font-family: var(--font-blizzard-primary) !important;
+  font-weight: 700 !important;
+  text-transform: uppercase !important;
+  letter-spacing: 1px !important;
+  transition: all 0.3s ease !important;
+  box-shadow: 0 4px 16px rgba(141, 213, 43, 0.2) !important;
+  text-decoration: none !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+}
+
+.primary:hover {
+  transform: translateY(-2px) scale(1.02) !important;
+  box-shadow: 0 8px 24px rgba(141, 213, 43, 0.4) !important;
+  border-color: rgba(141, 213, 43, 0.6) !important;
+  color: var(--wow-darkest) !important;
+}
+
+.secondary {
+  background: rgba(255, 255, 255, 0.1) !important;
+  border: 1px solid rgba(255, 255, 255, 0.2) !important;
+  border-radius: 12px !important;
+  padding: 12px 24px !important;
+  color: white !important;
+  font-family: var(--font-blizzard-primary) !important;
+  font-weight: 600 !important;
+  text-transform: uppercase !important;
+  letter-spacing: 1px !important;
+  transition: all 0.3s ease !important;
+  text-decoration: none !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+}
+
+.secondary:hover {
+  background: rgba(255, 255, 255, 0.2) !important;
+  border-color: rgba(141, 213, 43, 0.4) !important;
+  color: var(--wow-gold) !important;
+  transform: translateY(-2px) !important;
+  box-shadow: 0 4px 16px rgba(255, 255, 255, 0.1) !important;
+}
+
+/* Modern Form Components */
+.modern-form {
+  background: var(--wow-glass);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid var(--wow-glass-border);
+  border-radius: 16px;
+  padding: 32px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+}
+
+.modern-form .MuiTextField-root {
+  margin-bottom: 16px;
+}
+
+.modern-form .MuiOutlinedInput-root {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
+  font-family: var(--font-blizzard-primary);
+  color: white;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+}
+
+.modern-form .MuiOutlinedInput-root:hover .MuiOutlinedInput-notchedOutline {
+  border-color: rgba(141, 213, 43, 0.5);
+}
+
+.modern-form .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline {
+  border-color: var(--wow-gold);
+  box-shadow: 0 0 16px rgba(141, 213, 43, 0.3);
+}
+
+.modern-form .MuiInputLabel-root {
+  color: rgba(255, 255, 255, 0.7);
+  font-family: var(--font-blizzard-primary);
+}
+
+.modern-form .MuiInputLabel-root.Mui-focused {
+  color: var(--wow-gold);
+}
+
+/* Modern Input Components */
+.modern-search-input {
+  background: rgba(255, 255, 255, 0.1) !important;
+  border: 1px solid rgba(141, 213, 43, 0.3) !important;
+  border-radius: 12px !important;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+}
+
+.modern-search-input:hover {
+  border-color: rgba(141, 213, 43, 0.5) !important;
+  background: rgba(255, 255, 255, 0.15) !important;
+}
+
+.modern-search-input:focus-within {
+  border-color: var(--wow-gold) !important;
+  box-shadow: 0 0 16px rgba(141, 213, 43, 0.3) !important;
+}
+
+/* Modern Grid Layouts */
+.dashboard-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 24px;
+  margin-bottom: 32px;
+}
+
+.dashboard-section {
+  background: var(--wow-glass);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid var(--wow-glass-border);
+  border-radius: 16px;
+  padding: 24px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+  transition: all 0.3s ease;
+}
+
+.dashboard-section:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.4);
+  border-color: rgba(141, 213, 43, 0.4);
+}

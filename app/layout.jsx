@@ -1,8 +1,9 @@
 import StyledComponentsRegistry from '../lib/registry'
 import { Analytics } from '@vercel/analytics/react'
 
-import '@/core/themes/base.scss'
 import '@/core/fonts/blizzard-local.css'
+import '@/core/themes/base.scss'
+import '@/core/themes/modern.css'
 
 import { systemui, jockeyone } from '@/app/fonts'
 import BaseLayout from '@/core/layout'

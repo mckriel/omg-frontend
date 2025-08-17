@@ -11,7 +11,7 @@ import Typography from '@mui/material/Typography'
 import { Alert, AlertTitle, Snackbar } from '@mui/material'
 
 import { P } from '@/core/components/typography'
-import Nav from '@/core/components/nav'
+import ModernNav from '@/core/components/ModernNav'
 
 export default function AuditLayout({ children }) {
     const [showSeasonAlert, setShowSeasonAlert] = useState(false)
@@ -31,18 +31,19 @@ export default function AuditLayout({ children }) {
     }
 
     return <ThemeProvider>
-        <Box className="layout-root">
-            {/* Navigation */}
-            <Nav />
+        <div className="min-h-screen" style={{ background: 'linear-gradient(135deg, #0a0612 0%, #110d17 50%, #0f0a15 100%)', backgroundAttachment: 'fixed' }}>
+            {/* Modern Navigation */}
+            <ModernNav />
             {/* Main content area */}
-            <Box className="layout-content">
+            <main className="container mx-auto px-4 lg:px-8 py-8">
                 {children}
                 <div className="copyright">
                     <p className="copyright-text">
                         &copy; 2025 Holybarryz (Scott Jones). All rights reserved.
                     </p>
                 </div>
-            </Box>
+            </main>
+            
             <Snackbar
                 open={showSeasonAlert}
                 anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
@@ -62,6 +63,6 @@ export default function AuditLayout({ children }) {
                     </Typography>
                 </Alert>
             </Snackbar>
-        </Box>
+        </div>
     </ThemeProvider>
 }

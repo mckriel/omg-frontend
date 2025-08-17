@@ -3,7 +3,6 @@ import React, { useMemo } from 'react'
 import Box from '@mui/material/Box'
 import Paper from '@mui/material/Paper'
 import Typography from '@mui/material/Typography'
-import Grid from '@mui/material/Grid'
 
 import AuditBlock from '@/core/modules/auditBlock'
 import config from '@/app.config.js'
@@ -28,6 +27,7 @@ import SearchIcon from '@mui/icons-material/Search'
 import IconButton from '@mui/material/IconButton'
 import ScrollIcon from '@mui/icons-material/Description'
 import Tooltip from '@mui/material/Tooltip'
+import DiamondIcon from '@mui/icons-material/Diamond'
 
 
 import './scss/dashboard.scss'
@@ -104,18 +104,37 @@ const Dashboard = ({ guildData }) => {
             ? topPvp.reduce((acc, p) => acc + (p.rating || 0), 0) / topPvp.length 
             : 0
 
-        // Count players with raid lockouts using auditData
-        const totalLocked = (auditData.locked || []).length
-
-        // Get players with missing enchants from the optimized data
-        const missingEnchantsPlayers = allPlayers.filter(player => 
-            player.missingEnchants && player.missingEnchants.length > 0
-        )
+        // Count raid-ready players with raid lockouts (same criteria as raid-ready players)
+        const totalLocked = (auditData.locked || []).filter(player =>
+            player.itemLevel && player.itemLevel >= 675 && 
+            player.guildRank >= 0 && player.guildRank <= 6
+        ).length
 
         // Count raid-ready players (675+ ilvl AND guild rank 0-6)
         const raidReadyPlayers = allPlayers.filter(player => {
             return player.itemLevel && player.itemLevel >= 675 && 
                    player.guildRank >= 0 && player.guildRank <= 6
+        })
+
+        // Get raid-ready players with missing enchants (excluding head enchants)
+        const missingEnchantsPlayers = raidReadyPlayers.filter(player => {
+            if (!player.missingEnchants || player.missingEnchants.length === 0) {
+                return false
+            }
+            
+            // Filter out head enchants from missing enchants
+            const nonHeadMissingEnchants = player.missingEnchants.filter(slot => slot !== 'head')
+            return nonHeadMissingEnchants.length > 0
+        })
+
+        // Get raid-ready players with missing jewelry sockets (not 6/6)
+        const missingSocketsPlayers = raidReadyPlayers.filter(player => {
+            // Check if player doesn't have 6 gemmed sockets
+            const jewelry = player.jewelry || {}
+            const gemmedSockets = jewelry.gemmed_sockets || 0
+            
+            // Player needs gems if they don't have 6 gemmed sockets
+            return gemmedSockets !== 6
         })
 
         // Get raid-ready players from processed auditData (includes lockout info)
@@ -156,13 +175,14 @@ const Dashboard = ({ guildData }) => {
             totalMembers: allPlayers.length,
             raidReadyCount: raidReadyPlayers.length,
             raidReadyPlayersData: filteredRaidReadyPlayers,
-            missingEnchants: missingEnchants.all || 0,
+            missingEnchants: missingEnchantsPlayers.length,
             raidLocked: totalLocked,
-            avgTopMplus: avgTopMplus,
+            missingSockets: missingSocketsPlayers.length,
             avgTopPvp: avgTopPvp,
             topMplus: topPve,
             topPvp: topPvp,
             missingEnchantsPlayers: missingEnchantsPlayers,
+            missingSocketsPlayers: missingSocketsPlayers,
             tanks: raidReadyTanks.length,
             healers: raidReadyHealers.length,
             dps: raidReadyDPS.length,
@@ -177,76 +197,54 @@ const Dashboard = ({ guildData }) => {
         <section className="dashboard">
             <Box>
                 {/* Role Stats Cards */}
-                <Grid container spacing={2} className="stats-cards">
-                    <Grid item xs={12} sm={6} md={4}>
-                        <StatCard
-                            title="Tanks"
-                            value={data.tanks}
-                            description="Active tank players"
-                            icon={ShieldIcon}
-                        />
-                    </Grid>
-                    <Grid item xs={12} sm={6} md={4}>
-                        <StatCard
-                            title="Healers"
-                            value={data.healers}
-                            description="Active healer players"
-                            icon={LocalHospitalIcon}
-                        />
-                    </Grid>
-                    <Grid item xs={12} sm={6} md={4}>
-                        <StatCard
-                            title="DPS"
-                            value={data.dps}
-                            description="Active DPS players"
-                            icon={SwordIcon}
-                        />
-                    </Grid>
-                </Grid>
+                <div className="dashboard-grid">
+                    <StatCard
+                        title="Tanks"
+                        value={data.tanks}
+                        description="Active tank players"
+                        icon={ShieldIcon}
+                    />
+                    <StatCard
+                        title="Healers"
+                        value={data.healers}
+                        description="Active healer players"
+                        icon={LocalHospitalIcon}
+                    />
+                    <StatCard
+                        title="DPS"
+                        value={data.dps}
+                        description="Active DPS players"
+                        icon={SwordIcon}
+                    />
+                </div>
 
                 {/* Other Stats Cards */}
-                <Grid container spacing={2} className="stats-cards" sx={{ mt: 2 }}>
-                    <Grid item xs={12} sm={6} md={2.4}>
-                        <StatCard
-                            title="Characters"
-                            value={data.raidReadyCount}
-                            description="Raid ready characters"
-                            icon={GroupIcon}
-                        />
-                    </Grid>
-                    <Grid item xs={12} sm={6} md={2.4}>
-                        <StatCard
-                            title="Missing Enchants"
-                            value={data.missingEnchants}
-                            description="Players need attention"
-                            icon={BuildIcon}
-                        />
-                    </Grid>
-                    <Grid item xs={12} sm={6} md={2.4}>
-                        <StatCard
-                            title="Raid Locked"
-                            value={data.raidLocked}
-                            description="Players with lockouts"
-                            icon={LockIcon}
-                        />
-                    </Grid>
-                    <Grid item xs={12} sm={6} md={2.4}>
-                        <StatCard
-                            title="M+ Score"
-                            value={Math.round(data.avgTopMplus)}
-                            description="Average of top 5"
-                            icon={StarIcon}
-                        />
-                    </Grid>
-                    <Grid item xs={12} sm={6} md={2.4}>
-                        <StatCard
-                            title="PvP Rating"
-                            value={Math.round(data.avgTopPvp)}
-                            description="Average of top 5"
-                            icon={EmojiEventsIcon}
-                        />
-                    </Grid>
-                </Grid>
+                <div className="dashboard-grid">
+                    <StatCard
+                        title="Characters"
+                        value={data.raidReadyCount}
+                        description="Raid-ready"
+                        icon={GroupIcon}
+                    />
+                    <StatCard
+                        title="Missing Enchants"
+                        value={data.missingEnchants}
+                        description="Characters missing enchants"
+                        icon={BuildIcon}
+                    />
+                    <StatCard
+                        title="Missing Gems"
+                        value={data.missingSockets}
+                        description="Characters missing gems"
+                        icon={DiamondIcon}
+                    />
+                    <StatCard
+                        title="Raid Locked"
+                        value={data.raidLocked}
+                        description="Characters"
+                        icon={LockIcon}
+                    />
+                </div>
 
 
                 {/* Raid Roster Table */}
@@ -304,11 +302,13 @@ const Dashboard = ({ guildData }) => {
                                     </InputAdornment>
                                 ),
                             }}
+                            className="modern-search-input"
                             sx={{ 
                                 width: 300,
                                 '& .MuiOutlinedInput-root': {
-                                    backgroundColor: '#2a2a2a',
+                                    backgroundColor: 'transparent',
                                     fontFamily: 'var(--font-blizzard-primary)',
+                                    color: 'white',
                                     '& fieldset': {
                                         border: 'none',
                                     },
@@ -320,8 +320,12 @@ const Dashboard = ({ guildData }) => {
                                     },
                                     '& input::placeholder': {
                                         fontFamily: 'var(--font-blizzard-primary)',
-                                        opacity: 0.7,
+                                        color: 'rgba(255, 255, 255, 0.6)',
+                                        opacity: 1,
                                     },
+                                    '& .MuiInputAdornment-root .MuiSvgIcon-root': {
+                                        color: 'var(--wow-gold)',
+                                    }
                                 }
                             }}
                         />

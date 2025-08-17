@@ -26,17 +26,22 @@ const {
     SEASON_START_DATE,
 } = config
 
-const processMissingEnchants = (missingEnchants) => {
-    if (!missingEnchants || missingEnchants.length === 0) {
-        return <span>none</span>
-    }
-
-    const amount = missingEnchants.length
-    const value = missingEnchants.join(', ')
+const processEnchants = (missingEnchantsCount) => {
+    const totalEnchants = 8
+    const currentEnchants = totalEnchants - (missingEnchantsCount || 0)
+    const isComplete = currentEnchants === totalEnchants
 
     return (
-        <Tooltip title={value} placement="top">
-            <span>{amount}</span>
+        <Tooltip 
+            title={`${currentEnchants} of ${totalEnchants} enchants applied`}
+            placement="top"
+        >
+            <span style={{ 
+                color: isComplete ? 'green' : 'red',
+                fontWeight: isComplete ? 'normal' : 'bold'
+            }}>
+                {currentEnchants}/{totalEnchants}
+            </span>
         </Tooltip>
     )
 }
@@ -54,54 +59,133 @@ const processTierItems = (tierSets) => {
     }
 
     const { season3 } = tierSets;
+    const tierCount = Math.min(season3 || 0, 4); // Cap at 4 even if they have 5
+    const isComplete = tierCount === 4;
     
     return (
         <Tooltip 
-            title={`Season 3: ${season3 || 0}/5 pieces`} 
+            title={`Season 3: ${tierCount}/4 tier pieces`} 
             placement="top"
         >
-            <span>{`${season3 || 0}/5`}</span>
-        </Tooltip>
-    )
-}
-
-const processHasWaist = (missingWaist) => {
-    return (
-        <Tooltip
-            title={
-                !missingWaist
-                    ? 'Has "Durable Information Securing Container"'
-                    : 'Missing "Durable Information Securing Container"'
-            }
-            placement="top"
-        >
-            <span>
-                {!missingWaist ? (
-                    <span style={{ color: 'green' }}>⬤</span>
-                ) : (
-                    <span style={{ color: 'red' }}>✕</span>
-                )}
+            <span style={{
+                color: isComplete ? 'green' : (tierCount >= 2 ? 'orange' : 'red'),
+                fontWeight: isComplete ? 'normal' : 'bold'
+            }}>
+                {tierCount}/4
             </span>
         </Tooltip>
     )
 }
 
-const processHasCloak = (missingCloak) => {
+const processLockStatus = (lockStatus) => {
+    if (!lockStatus || !lockStatus.lockedTo) {
+        return (
+            <Tooltip title="No raid lockout information" placement="top">
+                <span>None</span>
+            </Tooltip>
+        )
+    }
+
+    const relevantLocks = []
+    const lockedTo = lockStatus.lockedTo
+
+    // Only check for Heroic and Mythic difficulties
+    if (lockedTo.Heroic) {
+        const { completed, total } = lockedTo.Heroic
+        if (completed > 0) {
+            relevantLocks.push(`Heroic: ${completed}/${total}`)
+        }
+    }
+
+    if (lockedTo.Mythic) {
+        const { completed, total } = lockedTo.Mythic
+        if (completed > 0) {
+            relevantLocks.push(`Mythic: ${completed}/${total}`)
+        }
+    }
+
+    if (relevantLocks.length === 0) {
+        return (
+            <Tooltip title="No heroic or mythic raid lockouts" placement="top">
+                <span>None</span>
+            </Tooltip>
+        )
+    }
+
+    const tooltipText = relevantLocks.join(', ')
+    const displayText = relevantLocks.length > 1 
+        ? `${relevantLocks.length} raids` 
+        : relevantLocks[0].split(': ')[1] // Show just the progress for single raid
+
+    return (
+        <Tooltip title={tooltipText} placement="top">
+            <span style={{ 
+                cursor: 'help',
+                borderBottom: '1px dotted',
+                color: relevantLocks.length > 0 ? 'orange' : 'inherit'
+            }}>
+                {displayText}
+            </span>
+        </Tooltip>
+    )
+}
+
+const processJewelrySockets = (jewelrySummary) => {
+    if (!jewelrySummary) {
+        return (
+            <Tooltip title="No jewelry data available" placement="top">
+                <span>N/A</span>
+            </Tooltip>
+        )
+    }
+
+    const { gemmed_sockets = 0, total_sockets = 0 } = jewelrySummary
+    const percentage = total_sockets > 0 ? (gemmed_sockets / total_sockets) * 100 : 0
+    const isComplete = gemmed_sockets === 6 && total_sockets === 6
+
     return (
         <Tooltip
-            title={
-                !missingCloak
-                    ? 'Has "Reshii Wraps"'
-                    : 'Missing "Reshii Wraps"'
-            }
+            title={`${gemmed_sockets} of ${total_sockets} jewelry sockets gemmed (${Math.round(percentage)}%)`}
             placement="top"
         >
-            <span>
-                {!missingCloak ? (
-                    <span style={{ color: 'green' }}>⬤</span>
-                ) : (
-                    <span style={{ color: 'red' }}>✕</span>
-                )}
+            <span style={{ 
+                color: isComplete ? 'green' : 'red',
+                fontWeight: isComplete ? 'normal' : 'bold'
+            }}>
+                {gemmed_sockets}/{total_sockets}
+            </span>
+        </Tooltip>
+    )
+}
+
+const processCloak = (missingCloak, cloakItemLevel, allPlayersData) => {
+    if (missingCloak || !cloakItemLevel) {
+        return (
+            <Tooltip title='Missing "Reshii Wraps"' placement="top">
+                <span style={{ color: 'red' }}>✕</span>
+            </Tooltip>
+        )
+    }
+
+    // Find the maximum cloak item level from all players
+    const maxCloakLevel = Math.max(
+        ...allPlayersData
+            .filter(player => player.cloakItemLevel && !player.missingCloak)
+            .map(player => player.cloakItemLevel)
+    )
+
+    const isMaxLevel = cloakItemLevel === maxCloakLevel
+
+    return (
+        <Tooltip
+            title={`Cloak item level: ${cloakItemLevel}${isMaxLevel ? ' (Max)' : ''}`}
+            placement="top"
+        >
+            <span style={{ 
+                color: isMaxLevel ? 'green' : 'orange',
+                fontWeight: 'bold'
+            }}>
+                {cloakItemLevel}
             </span>
         </Tooltip>
     )
@@ -110,13 +194,13 @@ const processHasCloak = (missingCloak) => {
 const headCells = [
     { id: 'avatar', label: '', sortable: false, width: 120 },
     { id: 'itemlevel', label: 'ILvL', sortable: false, width: 50 },
-    { id: 'name', label: 'Name & Spec', sortable: true },
-    { id: 'links', label: 'Links', sortable: false, width: 80 },
+    { id: 'name', label: 'Character', sortable: false },
+    { id: 'links', label: '', sortable: false, width: 100 },
     { id: 'guildRank', label: 'Guild Rank', sortable: false },
-    { id: 'enchants', label: 'Missing Enchants', sortable: false },
-    { id: 'hasWaist', label: 'Waist', sortable: false },
+    { id: 'enchants', label: 'Enchants', sortable: false },
+    { id: 'jewelry', label: 'Jewelry', sortable: false },
     { id: 'hasCloak', label: 'Cloak', sortable: false },
-    { id: 'tier', label: 'Tier Pieces', sortable: false },
+    { id: 'tier', label: 'Tier', sortable: false },
     { id: 'locked', label: 'Locked', sortable: false },
 ]
 
@@ -129,7 +213,7 @@ function EnhancedTableHead({ order, orderBy, onRequestSort, officerList }) {
 
     return (
         <TableHead>
-            <TableRow>
+            <TableRow className="table-header-modern">
                 {headCells.map((headCell) => {
                     if (
                         officerList &&
@@ -282,7 +366,7 @@ const AuditBlock = ({ data, name, hideControls, searchFilter, onSearchChange }) 
     const sortedData = filteredData.sort(getComparator(order, orderBy))
 
     return (
-        <Paper sx={{ width: '100%', mb: 2 }}>
+        <Paper className="glass-table" sx={{ width: '100%', mb: 2, background: 'transparent', boxShadow: 'none' }}>
             <TableContainer>
                 <Table sx={{ minWidth: 750 }} aria-labelledby="tableTitle">
                     <EnhancedTableHead
@@ -297,7 +381,7 @@ const AuditBlock = ({ data, name, hideControls, searchFilter, onSearchChange }) 
                                 page * rowsPerPage + rowsPerPage
                             )
                             .map((item, index) => (
-                                <TableRow key={index}>
+                                <TableRow key={index} className="table-row-modern">
                                     <TableCell sx={{ width: 120 }}>
                                         <div className="mediaWrapper">
                                             {item?.media?.assets?.length ? (
@@ -380,8 +464,32 @@ const AuditBlock = ({ data, name, hideControls, searchFilter, onSearchChange }) 
                                             </P>
                                         </div>
                                     </TableCell>
-                                    <TableCell sx={{ width: 80, textAlign: 'center' }}>
-                                        <div style={{ display: 'flex', gap: '8px', justifyContent: 'center', alignItems: 'center' }}>
+                                    <TableCell sx={{ width: 100, textAlign: 'center' }}>
+                                        <div style={{ display: 'flex', gap: '6px', justifyContent: 'center', alignItems: 'center' }}>
+                                            <a
+                                                href={`https://worldofwarcraft.blizzard.com/en-gb/character/eu/${item.server}/${item.name.toLowerCase()}`}
+                                                target="_blank"
+                                                rel="noopener noreferrer"
+                                                style={{
+                                                    display: 'inline-flex',
+                                                    alignItems: 'center',
+                                                    textDecoration: 'none',
+                                                    opacity: 0.7,
+                                                    transition: 'opacity 0.2s ease'
+                                                }}
+                                                onMouseEnter={(e) => e.currentTarget.style.opacity = 1}
+                                                onMouseLeave={(e) => e.currentTarget.style.opacity = 0.7}
+                                            >
+                                                <img 
+                                                    src="/images/armory.png" 
+                                                    alt="WoW Armory" 
+                                                    style={{
+                                                        width: '22px',
+                                                        height: '22px',
+                                                        objectFit: 'contain'
+                                                    }}
+                                                />
+                                            </a>
                                             <a
                                                 href={`https://www.warcraftlogs.com/character/eu/${item.server}/${item.name.toLowerCase()}`}
                                                 target="_blank"
@@ -424,8 +532,8 @@ const AuditBlock = ({ data, name, hideControls, searchFilter, onSearchChange }) 
                                                     src="/images/raiderio.png" 
                                                     alt="Raider.IO" 
                                                     style={{
-                                                        width: '26px',
-                                                        height: '26px',
+                                                        width: '24px',
+                                                        height: '24px',
                                                         objectFit: 'contain'
                                                     }}
                                                 />
@@ -436,53 +544,19 @@ const AuditBlock = ({ data, name, hideControls, searchFilter, onSearchChange }) 
                                         {GUILLD_RANKS[item.guildRank] || item.guildRank}
                                     </TableCell>
                                     <TableCell>
-                                        {processMissingEnchants(
-                                            item.missingEnchants
-                                        )}
+                                        {processEnchants(item.missingEnchantsCount)}
                                     </TableCell>
                                     <TableCell>
-                                        {processHasWaist(item.missingWaist)}
+                                        {processJewelrySockets(item.jewelry)}
                                     </TableCell>
                                     <TableCell>
-                                        {processHasCloak(item.missingCloak)}
+                                        {processCloak(item.missingCloak, item.cloakItemLevel, sortedData)}
                                     </TableCell>
                                     <TableCell>
                                         {processTierItems(item.tierSets)}
                                     </TableCell>
                                     <TableCell>
-                                        <Tooltip
-                                            title={
-                                                <div style={{ 
-                                                    whiteSpace: 'pre-line',
-                                                    fontSize: '0.875rem',
-                                                    padding: '8px'
-                                                }}>
-                                                    {item.lockedTooltipString || 'No lockout information available'}
-                                                </div>
-                                            }
-                                            placement="top"
-                                            arrow
-                                            componentsProps={{
-                                                tooltip: {
-                                                    sx: {
-                                                        bgcolor: 'background.paper',
-                                                        color: 'text.primary',
-                                                        '& .MuiTooltip-arrow': {
-                                                            color: 'background.paper',
-                                                        },
-                                                        boxShadow: 1,
-                                                        maxWidth: 'none'
-                                                    }
-                                                }
-                                            }}
-                                        >
-                                            <span style={{ 
-                                                cursor: 'help',
-                                                borderBottom: '1px dotted'
-                                            }}>
-                                                {item.lockedToString || 'None'}
-                                            </span>
-                                        </Tooltip>
+                                        {processLockStatus(item.lockStatus)}
                                     </TableCell>
                                 </TableRow>
                             ))}

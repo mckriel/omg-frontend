@@ -1,8 +1,13 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
 body, html {
-  background: #110d17;
+  background: linear-gradient(135deg, #0a0612 0%, #110d17 50%, #0f0a15 100%);
+  background-attachment: fixed;
   font-family: var(--font-blizzard-body);
   font-size: 16px;
-  color: #dcdada;
+  color: #e8e6e6;
   padding: 0;
   margin: 0;
 
@@ -204,14 +209,13 @@ body, html {
 
 // Navigation and layout styles
 .layout-root {
-  background-color: #08060c;
+  background: linear-gradient(135deg, #0a0612 0%, #110d17 50%, #0f0a15 100%);
+  background-attachment: fixed;
   min-height: 100vh;
 }
 
 .layout-content {
-  background-color: #08060c;
-  background-size: 100% auto;
-  background-repeat: no-repeat;
+  background: transparent;
   min-height: 100vh;
 }
 
