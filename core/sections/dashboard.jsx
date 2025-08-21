@@ -112,7 +112,7 @@ const Dashboard = ({ guildData }) => {
 
         // Count raid-ready players (675+ ilvl AND guild rank 0-6)
         const raidReadyPlayers = allPlayers.filter(player => {
-            return player.itemLevel && player.itemLevel >= 675 && 
+            return player.itemLevel && player.itemLevel >= 690 && 
                    player.guildRank >= 0 && player.guildRank <= 6
         })
 
