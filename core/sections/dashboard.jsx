@@ -13,7 +13,6 @@ import getPreviousWednesdayAt1AM from '@/core/utils/currentLockout'
 import Alert from '@mui/material/Alert'
 import CircularProgress from '@mui/material/CircularProgress'
 
-// Icons
 import GroupIcon from '@mui/icons-material/Group'
 import BuildIcon from '@mui/icons-material/Build'
 import LockIcon from '@mui/icons-material/Lock'
@@ -22,6 +21,8 @@ import EmojiEventsIcon from '@mui/icons-material/EmojiEvents'
 import ShieldIcon from '@mui/icons-material/Shield'
 import LocalHospitalIcon from '@mui/icons-material/LocalHospital'
 import SwordIcon from '@mui/icons-material/MyLocation'
+import WarningIcon from '@mui/icons-material/Warning'
+import TrendingUpIcon from '@mui/icons-material/TrendingUp'
 import TextField from '@mui/material/TextField'
 import InputAdornment from '@mui/material/InputAdornment'
 import SearchIcon from '@mui/icons-material/Search'
@@ -56,7 +57,6 @@ const Dashboard = ({ guildData }) => {
         getPreviousWednesdayAt1AM(Date.now())
     )
 
-    // Handle loading and error states
     if (!guildData) {
         return (
             <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '50vh' }}>
@@ -89,16 +89,27 @@ const Dashboard = ({ guildData }) => {
     ])
 
     const data = useMemo(() => {
-        const allPlayers = guildDataToUse || []
+        const allPlayers = (guildDataToUse || []).map(player => ({
+            ...player,
+            itemLevel: player.item_level,
+            guildRank: parseInt(player.guild_rank),
+            missingEnchantsCount: player.missing_enchants_count,
+            missingCloak: player.missing_cloak,
+            cloakItemLevel: player.cloak_item_level,
+            tierSets: player.tier_sets,
+            lockStatus: {
+                isLocked: player.lockout_status?.isLocked || false,
+                lockedTo: player.lockout_status?.lockedTo || {}
+            },
+            jewelrySummary: player.jewelry
+        }))
 
-        // Use statistics from API response
         const statistics = guildData.statistics || {};
         const missingEnchants = guildData.missingEnchants || { all: 0, mains: 0, alts: 0 };
         const topPvp = guildData.topPvp || [];
         const topPve = guildData.topPve || [];
         const roleCounts = guildData.roleCounts || { tanks: 0, healers: 0, dps: 0 };
 
-        // Calculate averages from top players
         const avgTopMplus = topPve.length > 0 
             ? topPve.reduce((acc, p) => acc + (p.score || 0), 0) / topPve.length 
             : 0
@@ -106,79 +117,61 @@ const Dashboard = ({ guildData }) => {
             ? topPvp.reduce((acc, p) => acc + (p.rating || 0), 0) / topPvp.length 
             : 0
 
-        // Single pass filtering for raid-ready players with categorization
         const raidReadyData = {
-            players: [],
+            players: allPlayers,
             tanks: [],
             healers: [],
             dps: [],
             missingEnchants: [],
-            missingSockets: [],
-            withLockouts: []
+            missingSockets: []
         }
 
-        // Filter all players once and categorize them
         allPlayers.forEach(player => {
-            const is_raid_ready = player.itemLevel && player.itemLevel >= config.RAID_TEAM_ILVL && 
-                                 player.guildRank >= 0 && player.guildRank <= 6
+            if (config.TANKS.includes(player.spec)) {
+                raidReadyData.tanks.push(player)
+            } else if (config.HEALERS.includes(player.spec)) {
+                raidReadyData.healers.push(player)
+            } else {
+                raidReadyData.dps.push(player)
+            }
 
-            if (is_raid_ready) {
-                raidReadyData.players.push(player)
-
-                // Categorize by role in the same pass
-                if (config.TANKS.includes(player.spec)) {
-                    raidReadyData.tanks.push(player)
-                } else if (config.HEALERS.includes(player.spec)) {
-                    raidReadyData.healers.push(player)
-                } else {
-                    raidReadyData.dps.push(player)
+            if (player.missingEnchants && player.missingEnchants.length > 0) {
+                const nonHeadMissingEnchants = player.missingEnchants.filter(slot => slot !== 'head')
+                if (nonHeadMissingEnchants.length > 0) {
+                    raidReadyData.missingEnchants.push(player)
                 }
+            }
 
-                // Check for missing enchants (excluding head enchants)
-                if (player.missingEnchants && player.missingEnchants.length > 0) {
-                    const nonHeadMissingEnchants = player.missingEnchants.filter(slot => slot !== 'head')
-                    if (nonHeadMissingEnchants.length > 0) {
-                        raidReadyData.missingEnchants.push(player)
-                    }
-                }
-
-                // Check for missing jewelry sockets (not 6/6)
-                const jewelry = player.jewelry || {}
-                const gemmedSockets = jewelry.gemmed_sockets || 0
-                if (gemmedSockets !== 6) {
-                    raidReadyData.missingSockets.push(player)
-                }
+            const jewelry = player.jewelry || {}
+            const gemmedSockets = jewelry.gemmed_sockets || 0
+            if (gemmedSockets !== 6) {
+                raidReadyData.missingSockets.push(player)
             }
         })
 
-        // Process auditData.all for players with lockouts (using same criteria)
-        auditData.all.forEach(player => {
-            const is_raid_ready = player.itemLevel && player.itemLevel >= config.RAID_TEAM_ILVL &&
-                                 player.guildRank >= 0 && player.guildRank <= 6
-            if (is_raid_ready) {
-                raidReadyData.withLockouts.push(player)
-            }
-        })
-
-        // Count raid-ready players with raid lockouts
-        const totalLocked = (auditData.locked || []).filter(player =>
-            player.itemLevel && player.itemLevel >= config.RAID_TEAM_ILVL && 
-            player.guildRank >= 0 && player.guildRank <= 6
+        const totalLocked = allPlayers.filter(player => 
+            player.lockedToString && player.lockedToString !== 'None'
         ).length
 
-        // Assign optimized results to original variable names for compatibility
+        const maxCloakLevel = Math.max(...allPlayers.map(player => player.cloak_item_level || 0))
+        const notRaidReadyCount = allPlayers.filter(player => 
+            !player.raid_ready || player.cloak_item_level < maxCloakLevel
+        ).length
+        const raidReadyPlayersOnly = allPlayers.filter(player => player.raid_ready)
+        const avgItemLevel = raidReadyPlayersOnly.length > 0 
+            ? (raidReadyPlayersOnly.reduce((sum, player) => sum + player.itemLevel, 0) / raidReadyPlayersOnly.length).toFixed(1)
+            : 0
+
         const raidReadyPlayers = raidReadyData.players
         const missingEnchantsPlayers = raidReadyData.missingEnchants
         const missingSocketsPlayers = raidReadyData.missingSockets
-        const raidReadyPlayersWithLockouts = raidReadyData.withLockouts
         const raidReadyTanks = raidReadyData.tanks
         const raidReadyHealers = raidReadyData.healers
         const raidReadyDPS = raidReadyData.dps
 
         setIsDataLoaded(true)
 
-        // Apply filters if active
-        let filteredRaidReadyPlayers = raidReadyPlayersWithLockouts;
+        let filteredRaidReadyPlayers = allPlayers;
         
         if (showMissingEnchantsOnly) {
             filteredRaidReadyPlayers = filteredRaidReadyPlayers.filter(player => 
@@ -198,7 +191,8 @@ const Dashboard = ({ guildData }) => {
             raidReadyPlayersData: filteredRaidReadyPlayers,
             missingEnchants: missingEnchantsPlayers.length,
             raidLocked: totalLocked,
-            missingSockets: missingSocketsPlayers.length,
+            notRaidReady: notRaidReadyCount,
+            avgItemLevel: avgItemLevel,
             avgTopPvp: avgTopPvp,
             topMplus: topPve,
             topPvp: topPvp,
@@ -217,7 +211,6 @@ const Dashboard = ({ guildData }) => {
     return (
         <section className="dashboard">
             <Box>
-                {/* Role Stats Cards */}
                 <div className="dashboard-grid">
                     <StatCard
                         title="Tanks"
@@ -239,7 +232,6 @@ const Dashboard = ({ guildData }) => {
                     />
                 </div>
 
-                {/* Other Stats Cards */}
                 <div className="dashboard-grid">
                     <StatCard
                         title="Characters"
@@ -248,16 +240,16 @@ const Dashboard = ({ guildData }) => {
                         icon={GroupIcon}
                     />
                     <StatCard
-                        title="Missing Enchants"
-                        value={data.missingEnchants}
-                        description="Characters missing enchants"
-                        icon={BuildIcon}
+                        title="Not Raid Ready"
+                        value={data.notRaidReady}
+                        description="Characters"
+                        icon={WarningIcon}
                     />
                     <StatCard
-                        title="Missing Gems"
-                        value={data.missingSockets}
-                        description="Characters missing gems"
-                        icon={DiamondIcon}
+                        title="Item Level"
+                        value={data.avgItemLevel}
+                        description="Average"
+                        icon={TrendingUpIcon}
                     />
                     <StatCard
                         title="Raid Locked"
@@ -268,7 +260,6 @@ const Dashboard = ({ guildData }) => {
                 </div>
 
 
-                {/* Raid Roster Table */}
                 <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 0.25 }}>
                     <Typography
                         variant="h2"
@@ -279,38 +270,6 @@ const Dashboard = ({ guildData }) => {
                         Raid Roster
                     </Typography>
                     <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mt: 4 }}>
-                        <Tooltip title="Show only players with missing enchants">
-                            <IconButton
-                                onClick={() => setShowMissingEnchantsOnly(!showMissingEnchantsOnly)}
-                                sx={{
-                                    backgroundColor: showMissingEnchantsOnly ? '#4a4a4a' : '#2a2a2a',
-                                    color: showMissingEnchantsOnly ? '#ffa726' : '#fff',
-                                    '&:hover': {
-                                        backgroundColor: showMissingEnchantsOnly ? '#5a5a5a' : '#3a3a3a',
-                                    },
-                                    transition: 'all 0.2s ease',
-                                    borderRadius: 1,
-                                }}
-                            >
-                                <ScrollIcon />
-                            </IconButton>
-                        </Tooltip>
-                        <Tooltip title="Show only players with raid lockouts">
-                            <IconButton
-                                onClick={() => setShowLockedOnly(!showLockedOnly)}
-                                sx={{
-                                    backgroundColor: showLockedOnly ? '#4a4a4a' : '#2a2a2a',
-                                    color: showLockedOnly ? '#ffa726' : '#fff',
-                                    '&:hover': {
-                                        backgroundColor: showLockedOnly ? '#5a5a5a' : '#3a3a3a',
-                                    },
-                                    transition: 'all 0.2s ease',
-                                    borderRadius: 1,
-                                }}
-                            >
-                                <LockIcon />
-                            </IconButton>
-                        </Tooltip>
                         <TextField
                             size="small"
                             placeholder="Search players..."

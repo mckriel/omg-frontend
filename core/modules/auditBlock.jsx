@@ -376,12 +376,18 @@ const AuditBlock = ({ data, name, hideControls, searchFilter, onSearchChange }) 
                     />
                     <TableBody>
                         {sortedData
-                            .slice(
-                                page * rowsPerPage,
-                                page * rowsPerPage + rowsPerPage
-                            )
                             .map((item, index) => (
-                                <TableRow key={index} className="table-row-modern">
+                                <TableRow 
+                                    key={index} 
+                                    className="table-row-modern"
+                                    sx={{
+                                        backgroundColor: (!item.raid_ready || item.cloakItemLevel < Math.max(...sortedData.map(p => p.cloakItemLevel || 0))) ? 'rgba(255, 193, 7, 0.08)' : 'transparent',
+                                        borderLeft: (!item.raid_ready || item.cloakItemLevel < Math.max(...sortedData.map(p => p.cloakItemLevel || 0))) ? '2px solid rgba(255, 193, 7, 0.3)' : 'none',
+                                        '&:hover': {
+                                            backgroundColor: (!item.raid_ready || item.cloakItemLevel < Math.max(...sortedData.map(p => p.cloakItemLevel || 0))) ? 'rgba(255, 193, 7, 0.12)' : 'rgba(255, 255, 255, 0.05)'
+                                        }
+                                    }}
+                                >
                                     <TableCell sx={{ width: 120 }}>
                                         <div className="mediaWrapper">
                                             {item?.media?.assets?.length ? (
@@ -393,16 +399,46 @@ const AuditBlock = ({ data, name, hideControls, searchFilter, onSearchChange }) 
                                                     alt={item.name}
                                                     width={60}
                                                     height={60}
+                                                    style={{
+                                                        borderRadius: '12px',
+                                                        boxShadow: '0 4px 8px rgba(0, 0, 0, 0.15)',
+                                                        border: '2px solid rgba(255, 255, 255, 0.1)',
+                                                        transition: 'transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out',
+                                                        objectFit: 'cover'
+                                                    }}
+                                                    onMouseEnter={(e) => {
+                                                        e.currentTarget.style.transform = 'scale(1.05)'
+                                                        e.currentTarget.style.boxShadow = '0 6px 12px rgba(0, 0, 0, 0.25)'
+                                                    }}
+                                                    onMouseLeave={(e) => {
+                                                        e.currentTarget.style.transform = 'scale(1)'
+                                                        e.currentTarget.style.boxShadow = '0 4px 8px rgba(0, 0, 0, 0.15)'
+                                                    }}
                                                 />
                                             ) : (
                                                 <img
-                                                    style={{ opacity: '0.4' }}
                                                     src={
                                                         '/images/logo-without-text.png'
                                                     }
                                                     alt={item.name}
                                                     width={60}
                                                     height={60}
+                                                    style={{
+                                                        opacity: '0.4',
+                                                        borderRadius: '12px',
+                                                        boxShadow: '0 4px 8px rgba(0, 0, 0, 0.15)',
+                                                        border: '2px solid rgba(255, 255, 255, 0.1)',
+                                                        transition: 'transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out',
+                                                        objectFit: 'cover'
+                                                    }}
+                                                    onMouseEnter={(e) => {
+                                                        e.currentTarget.style.transform = 'scale(1.05)'
+                                                        e.currentTarget.style.boxShadow = '0 6px 12px rgba(0, 0, 0, 0.25)'
+                                                    }}
+                                                    onMouseLeave={(e) => {
+                                                        e.currentTarget.style.transform = 'scale(1)'
+                                                        e.currentTarget.style.boxShadow = '0 4px 8px rgba(0, 0, 0, 0.15)'
+                                                    }}
                                                 />
                                             )}
                                         </div>
@@ -563,17 +599,6 @@ const AuditBlock = ({ data, name, hideControls, searchFilter, onSearchChange }) 
                     </TableBody>
                 </Table>
             </TableContainer>
-            {!hideControls && (
-                <TablePagination
-                    rowsPerPageOptions={[20, 50, 80, 100]}
-                    component="div"
-                    count={sortedData.length}
-                    rowsPerPage={rowsPerPage}
-                    page={page}
-                    onPageChange={handleChangePage}
-                    onRowsPerPageChange={handleChangeRowsPerPage}
-                />
-            )}
         </Paper>
     )
 }
