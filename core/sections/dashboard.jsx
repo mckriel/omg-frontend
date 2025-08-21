@@ -5,8 +5,9 @@ import Paper from '@mui/material/Paper'
 import Typography from '@mui/material/Typography'
 
 import AuditBlock from '@/core/modules/auditBlock'
-import config from '@/app.config.js'
+import baseConfig from '@/app.config.js'
 import useAuditData from '@/core/hooks/useAuditData'
+import useConfig from '@/core/hooks/useConfig'
 import getPreviousWednesdayAt1AM from '@/core/utils/currentLockout'
 
 import Alert from '@mui/material/Alert'
@@ -36,6 +37,7 @@ import TopPlayersTable from '@/core/components/TopPlayersTable'
 import RoleDistribution from '@/core/components/RoleDistribution'
 
 const Dashboard = ({ guildData }) => {
+    const { config, loading: config_loading } = useConfig()
     const [isDataLoaded, setIsDataLoaded] = React.useState(false)
     const [searchFilter, setSearchFilter] = React.useState('')
     const [showMissingEnchantsOnly, setShowMissingEnchantsOnly] = React.useState(false)
@@ -45,10 +47,10 @@ const Dashboard = ({ guildData }) => {
     const [rankFilter, setRankFilter] = React.useState('all')
     const [specFilter, setSpecFilter] = React.useState('all')
     const [ilevelFilter, setIlevelFilter] = React.useState(
-        config.INITIAL_FILTERS.defaultItemLevel
+        baseConfig.INITIAL_FILTERS.defaultItemLevel
     )
     const [instanceIndex, setInstanceIndex] = React.useState(
-        config.INITIAL_FILTERS.instanceIndex
+        baseConfig.INITIAL_FILTERS.instanceIndex
     )
     const [lockTimeStamp, setLockTimeStamp] = React.useState(
         getPreviousWednesdayAt1AM(Date.now())

@@ -57,12 +57,17 @@ const RaidTeamIlvlSetting = () => {
     React.useEffect(() => {
         const load_current_config = async () => {
             try {
-                const response = await fetch('/api/config')
+                const backend_url = process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:8000'
+                const response = await fetch(`${backend_url}/settings/raid-team/ilvl-requirement`)
+                
                 if (response.ok) {
                     const data = await response.json()
-                    if (data.success && data.config.RAID_TEAM_ILVL) {
-                        setIlvl(data.config.RAID_TEAM_ILVL)
+                    if (data.success && data.value) {
+                        setIlvl(data.value)
                     }
+                } else {
+                    // If not found, try to get from local fallback
+                    console.log('Settings not found on backend, using local fallback')
                 }
             } catch (error) {
                 console.error('Error loading config:', error)
@@ -79,21 +84,24 @@ const RaidTeamIlvlSetting = () => {
         setMessage('')
 
         try {
-            const response = await fetch('/api/config/update', {
-                method: 'POST',
+            const backend_url = process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:8000'
+            const response = await fetch(`${backend_url}/settings/raid-team/ilvl-requirement`, {
+                method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify({
-                    key: 'RAID_TEAM_ILVL',
                     value: parseInt(ilvl)
                 }),
             })
 
             if (response.ok) {
+                const data = await response.json()
                 setMessage('Raid team ilvl requirement updated successfully!')
+                console.log('Setting updated:', data)
             } else {
-                throw new Error('Failed to update setting')
+                const error_data = await response.json()
+                throw new Error(error_data.message || 'Failed to update setting')
             }
         } catch (error) {
             setMessage('Error updating setting: ' + error.message)
