@@ -37,6 +37,7 @@ const data = {
         "Alt",
         "Social"
     ],
+    "RAID_TEAM_ILVL": 695,
     "RESULTS_PAGINATION": {
         "MAX_ITEMS": 20
     }

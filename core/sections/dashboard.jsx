@@ -104,55 +104,74 @@ const Dashboard = ({ guildData }) => {
             ? topPvp.reduce((acc, p) => acc + (p.rating || 0), 0) / topPvp.length 
             : 0
 
-        // Count raid-ready players with raid lockouts (same criteria as raid-ready players)
+        // Single pass filtering for raid-ready players with categorization
+        const raidReadyData = {
+            players: [],
+            tanks: [],
+            healers: [],
+            dps: [],
+            missingEnchants: [],
+            missingSockets: [],
+            withLockouts: []
+        }
+
+        // Filter all players once and categorize them
+        allPlayers.forEach(player => {
+            const is_raid_ready = player.itemLevel && player.itemLevel >= config.RAID_TEAM_ILVL && 
+                                 player.guildRank >= 0 && player.guildRank <= 6
+
+            if (is_raid_ready) {
+                raidReadyData.players.push(player)
+
+                // Categorize by role in the same pass
+                if (config.TANKS.includes(player.spec)) {
+                    raidReadyData.tanks.push(player)
+                } else if (config.HEALERS.includes(player.spec)) {
+                    raidReadyData.healers.push(player)
+                } else {
+                    raidReadyData.dps.push(player)
+                }
+
+                // Check for missing enchants (excluding head enchants)
+                if (player.missingEnchants && player.missingEnchants.length > 0) {
+                    const nonHeadMissingEnchants = player.missingEnchants.filter(slot => slot !== 'head')
+                    if (nonHeadMissingEnchants.length > 0) {
+                        raidReadyData.missingEnchants.push(player)
+                    }
+                }
+
+                // Check for missing jewelry sockets (not 6/6)
+                const jewelry = player.jewelry || {}
+                const gemmedSockets = jewelry.gemmed_sockets || 0
+                if (gemmedSockets !== 6) {
+                    raidReadyData.missingSockets.push(player)
+                }
+            }
+        })
+
+        // Process auditData.all for players with lockouts (using same criteria)
+        auditData.all.forEach(player => {
+            const is_raid_ready = player.itemLevel && player.itemLevel >= config.RAID_TEAM_ILVL &&
+                                 player.guildRank >= 0 && player.guildRank <= 6
+            if (is_raid_ready) {
+                raidReadyData.withLockouts.push(player)
+            }
+        })
+
+        // Count raid-ready players with raid lockouts
         const totalLocked = (auditData.locked || []).filter(player =>
-            player.itemLevel && player.itemLevel >= 675 && 
+            player.itemLevel && player.itemLevel >= config.RAID_TEAM_ILVL && 
             player.guildRank >= 0 && player.guildRank <= 6
         ).length
 
-        // Count raid-ready players (675+ ilvl AND guild rank 0-6)
-        const raidReadyPlayers = allPlayers.filter(player => {
-            return player.itemLevel && player.itemLevel >= 690 && 
-                   player.guildRank >= 0 && player.guildRank <= 6
-        })
-
-        // Get raid-ready players with missing enchants (excluding head enchants)
-        const missingEnchantsPlayers = raidReadyPlayers.filter(player => {
-            if (!player.missingEnchants || player.missingEnchants.length === 0) {
-                return false
-            }
-            
-            // Filter out head enchants from missing enchants
-            const nonHeadMissingEnchants = player.missingEnchants.filter(slot => slot !== 'head')
-            return nonHeadMissingEnchants.length > 0
-        })
-
-        // Get raid-ready players with missing jewelry sockets (not 6/6)
-        const missingSocketsPlayers = raidReadyPlayers.filter(player => {
-            // Check if player doesn't have 6 gemmed sockets
-            const jewelry = player.jewelry || {}
-            const gemmedSockets = jewelry.gemmed_sockets || 0
-            
-            // Player needs gems if they don't have 6 gemmed sockets
-            return gemmedSockets !== 6
-        })
-
-        // Get raid-ready players from processed auditData (includes lockout info)
-        const raidReadyPlayersWithLockouts = auditData.all.filter(player => {
-            return player.itemLevel && player.itemLevel >= 675 &&
-                   player.guildRank >= 0 && player.guildRank <= 6
-        })
-
-        // Calculate role counts from raid-ready players
-        const raidReadyTanks = raidReadyPlayers.filter(player => 
-            config.TANKS.includes(player.spec)
-        )
-        const raidReadyHealers = raidReadyPlayers.filter(player => 
-            config.HEALERS.includes(player.spec)
-        )
-        const raidReadyDPS = raidReadyPlayers.filter(player => 
-            !config.TANKS.includes(player.spec) && !config.HEALERS.includes(player.spec)
-        )
+        // Assign optimized results to original variable names for compatibility
+        const raidReadyPlayers = raidReadyData.players
+        const missingEnchantsPlayers = raidReadyData.missingEnchants
+        const missingSocketsPlayers = raidReadyData.missingSockets
+        const raidReadyPlayersWithLockouts = raidReadyData.withLockouts
+        const raidReadyTanks = raidReadyData.tanks
+        const raidReadyHealers = raidReadyData.healers
+        const raidReadyDPS = raidReadyData.dps
 
         setIsDataLoaded(true)
 
