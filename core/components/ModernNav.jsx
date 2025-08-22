@@ -30,16 +30,6 @@ const navigation_items = [
     path: '/raid-team',
     icon: Users,
   },
-  {
-    label: 'AUDIT',
-    path: '/audit',
-    icon: BarChart3,
-  },
-  {
-    label: 'RECRUITMENT',
-    path: '/join',
-    icon: UserPlus,
-  },
 ]
 
 function is_active(path, pathname) {
@@ -69,7 +59,7 @@ export default function ModernNav() {
               className="h-12 w-12 object-contain transition-transform group-hover:scale-110"
             />
             <div className="flex flex-col">
-              <span className="font-blizzard text-lg font-bold text-white tracking-wide">
+              <span className="font-blizzard text-lg font-bold text-white tracking-wide uppercase">
                 {guild_name}
               </span>
               <span className="font-blizzard text-xs text-wow-gold uppercase tracking-wider">

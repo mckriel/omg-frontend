@@ -27,26 +27,15 @@ async function getGuildData() {
             limit: 300 // Get a reasonable amount for dashboard
         });
 
-        // Fetch missing enchants statistics
-        const missingEnchantsResponse = await api.getMissingEnchantsStats();
-
-        // Fetch top PvP players
-        const topPvpResponse = await api.getTopPvPPlayers();
-
-        // Fetch top PvE players
-        const topPveResponse = await api.getTopPvEPlayers();
-
-        // Fetch role counts
-        const roleCountsResponse = await api.getRoleCounts();
 
         return {
             data: guildResponse.data,
             statistics: guildResponse.statistics,
             timestamp: guildResponse.timestamp,
-            missingEnchants: missingEnchantsResponse.data,
-            topPvp: topPvpResponse.data,
-            topPve: topPveResponse.data,
-            roleCounts: roleCountsResponse.data,
+            missingEnchants: null,
+            topPvp: null,
+            topPve: null,
+            roleCounts: null,
             error: null
         }
     } catch (error) {

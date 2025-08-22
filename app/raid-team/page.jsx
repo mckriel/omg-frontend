@@ -16,22 +16,14 @@ async function getRaidTeamData() {
     try {
         const raidTeamResponse = await api.getRaidTeamData();
 
-        const missingEnchantsResponse = await api.getMissingEnchantsStats();
-
-        const topPvpResponse = await api.getTopPvPPlayers();
-
-        const topPveResponse = await api.getTopPvEPlayers();
-
-        const roleCountsResponse = await api.getRoleCounts();
-
         return {
             data: raidTeamResponse.data,
             statistics: null,
             timestamp: null,
-            missingEnchants: missingEnchantsResponse.data,
-            topPvp: topPvpResponse.data,
-            topPve: topPveResponse.data,
-            roleCounts: roleCountsResponse.data,
+            missingEnchants: null,
+            topPvp: null,
+            topPve: null,
+            roleCounts: null,
             error: null
         }
     } catch (error) {

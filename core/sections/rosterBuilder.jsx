@@ -7,6 +7,7 @@ import { HTML5Backend } from 'react-dnd-html5-backend'
 import Typography from '@mui/material/Typography'
 import Button from '@mui/material/Button'
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline'
+import WarningIcon from '@mui/icons-material/Warning'
 import Paper from '@mui/material/Paper'
 
 import { calculateRaidBuffs } from '@/core/utils/raidBuffs'
@@ -87,6 +88,9 @@ const RosterPlanner = ({ guildData }) => {
         }
         return defaultRoster
     })
+
+    // State for highlighting non-raid-ready characters
+    const [show_not_raid_ready_highlighting, setShow_not_raid_ready_highlighting] = useState(false)
 
     
     /**
@@ -173,6 +177,13 @@ const RosterPlanner = ({ guildData }) => {
         })
     }
 
+    /**
+     * Toggles highlighting for non-raid-ready characters
+     */
+    const toggle_not_raid_ready_highlighting = () => {
+        setShow_not_raid_ready_highlighting(!show_not_raid_ready_highlighting)
+    }
+
     return (
         <>
             <DndProvider backend={HTML5Backend}>
@@ -203,14 +214,23 @@ const RosterPlanner = ({ guildData }) => {
                             >
                                 <strong> NOTICE: </strong> This tool allows you to build your own roster based on main characters from the guild.
                             </Typography>
-                            <Button
-                                variant="outlined"
-                                color="secondary"
-                                onClick={handleReset}
-                                sx={{ mb: 2 }}
-                            >
-                                Reset Roster
-                            </Button>
+                            <div style={{ display: 'flex', gap: '1rem', marginBottom: '1rem' }}>
+                                <Button
+                                    variant="outlined"
+                                    color="secondary"
+                                    onClick={handleReset}
+                                >
+                                    Reset Roster
+                                </Button>
+                                <Button
+                                    variant={show_not_raid_ready_highlighting ? "contained" : "outlined"}
+                                    color="warning"
+                                    onClick={toggle_not_raid_ready_highlighting}
+                                    startIcon={<WarningIcon />}
+                                >
+                                    {show_not_raid_ready_highlighting ? 'Hide' : 'Show'} Not Raid Ready
+                                </Button>
+                            </div>
                         </div>
                     </section>
 
@@ -269,6 +289,7 @@ const RosterPlanner = ({ guildData }) => {
                                             character={character}
                                             isDraggable={true}
                                             layout="horizontal"
+                                            show_not_raid_ready_highlighting={show_not_raid_ready_highlighting}
                                         />
                                     ))}
                             </div>
@@ -322,6 +343,7 @@ const RosterPlanner = ({ guildData }) => {
                                             (char) => char.name === charId
                                         )}
                                         onDrop={handleDrop}
+                                        show_not_raid_ready_highlighting={show_not_raid_ready_highlighting}
                                     />
                                 ))}
                             </div>
@@ -346,6 +368,7 @@ const RosterPlanner = ({ guildData }) => {
                                             (char) => char.name === charId
                                         )}
                                         onDrop={handleDrop}
+                                        show_not_raid_ready_highlighting={show_not_raid_ready_highlighting}
                                     />
                                 ))}
                             </div>
@@ -370,6 +393,7 @@ const RosterPlanner = ({ guildData }) => {
                                             (char) => char.name === charId
                                         )}
                                         onDrop={handleDrop}
+                                        show_not_raid_ready_highlighting={show_not_raid_ready_highlighting}
                                     />
                                 ))}
                             </div>
@@ -394,6 +418,7 @@ const RosterPlanner = ({ guildData }) => {
                                             (char) => char.name === charId
                                         )}
                                         onDrop={handleDrop}
+                                        show_not_raid_ready_highlighting={show_not_raid_ready_highlighting}
                                     />
                                 ))}
                             </div>
@@ -418,6 +443,7 @@ const RosterPlanner = ({ guildData }) => {
                                             (char) => char.name === charId
                                         )}
                                         onDrop={handleDrop}
+                                        show_not_raid_ready_highlighting={show_not_raid_ready_highlighting}
                                     />
                                 ))}
                             </div>

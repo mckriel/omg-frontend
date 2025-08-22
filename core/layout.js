@@ -31,7 +31,7 @@ export default function AuditLayout({ children }) {
     }
 
     return <ThemeProvider>
-        <div className="min-h-screen" style={{ background: 'linear-gradient(135deg, #0a0612 0%, #110d17 50%, #0f0a15 100%)', backgroundAttachment: 'fixed' }}>
+        <div className="min-h-screen" style={{ background: 'url(/design/bg1.png) center center / cover no-repeat fixed, linear-gradient(135deg, #0a0612 0%, #110d17 50%, #0f0a15 100%)' }}>
             {/* Modern Navigation */}
             <ModernNav />
             {/* Main content area */}
@@ -39,7 +39,7 @@ export default function AuditLayout({ children }) {
                 {children}
                 <div className="copyright">
                     <p className="copyright-text">
-                        &copy; 2025 Holybarryz (Scott Jones). All rights reserved.
+                        &copy; 2025 Scott Jones & Matthew Kriel. All rights reserved.
                     </p>
                 </div>
             </main>

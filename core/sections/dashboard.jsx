@@ -30,6 +30,7 @@ import IconButton from '@mui/material/IconButton'
 import ScrollIcon from '@mui/icons-material/Description'
 import Tooltip from '@mui/material/Tooltip'
 import DiamondIcon from '@mui/icons-material/Diamond'
+import Button from '@mui/material/Button'
 
 
 import './scss/dashboard.scss'
@@ -43,6 +44,7 @@ const Dashboard = ({ guildData }) => {
     const [searchFilter, setSearchFilter] = React.useState('')
     const [showMissingEnchantsOnly, setShowMissingEnchantsOnly] = React.useState(false)
     const [showLockedOnly, setShowLockedOnly] = React.useState(false)
+    const [show_not_raid_ready_highlighting, setShow_not_raid_ready_highlighting] = React.useState(false)
     const [query, setQuery] = React.useState('')
     const [classFilter, setClassFilter] = React.useState([])
     const [rankFilter, setRankFilter] = React.useState('all')
@@ -270,6 +272,21 @@ const Dashboard = ({ guildData }) => {
                         Raid Roster
                     </Typography>
                     <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mt: 4 }}>
+                        <Tooltip title={show_not_raid_ready_highlighting ? 'Hide Not Raid Ready' : 'Show Not Raid Ready'}>
+                            <IconButton
+                                color={show_not_raid_ready_highlighting ? "warning" : "default"}
+                                onClick={() => setShow_not_raid_ready_highlighting(!show_not_raid_ready_highlighting)}
+                                sx={{ 
+                                    mr: 2,
+                                    backgroundColor: show_not_raid_ready_highlighting ? 'rgba(237, 108, 2, 0.1)' : 'transparent',
+                                    '&:hover': {
+                                        backgroundColor: show_not_raid_ready_highlighting ? 'rgba(237, 108, 2, 0.2)' : 'rgba(255, 255, 255, 0.1)'
+                                    }
+                                }}
+                            >
+                                <WarningIcon />
+                            </IconButton>
+                        </Tooltip>
                         <TextField
                             size="small"
                             placeholder="Search players..."
@@ -316,6 +333,7 @@ const Dashboard = ({ guildData }) => {
                     name="all"
                     searchFilter={searchFilter}
                     onSearchChange={(value) => setSearchFilter(value)}
+                    show_not_raid_ready_highlighting={show_not_raid_ready_highlighting}
                 />
 
             </Box>

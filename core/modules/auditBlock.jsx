@@ -299,7 +299,7 @@ const getStatDifference = (current, stats) => {
     }
 }
 
-const AuditBlock = ({ data, name, hideControls, searchFilter, onSearchChange }) => {
+const AuditBlock = ({ data, name, hideControls, searchFilter, onSearchChange, show_not_raid_ready_highlighting = false }) => {
     if (!data[name]?.length && name !== 'locked') {
         return null
     }
@@ -381,10 +381,10 @@ const AuditBlock = ({ data, name, hideControls, searchFilter, onSearchChange }) 
                                     key={index} 
                                     className="table-row-modern"
                                     sx={{
-                                        backgroundColor: (!item.raid_ready || item.cloakItemLevel < Math.max(...sortedData.map(p => p.cloakItemLevel || 0))) ? 'rgba(255, 193, 7, 0.08)' : 'transparent',
-                                        borderLeft: (!item.raid_ready || item.cloakItemLevel < Math.max(...sortedData.map(p => p.cloakItemLevel || 0))) ? '2px solid rgba(255, 193, 7, 0.3)' : 'none',
+                                        backgroundColor: (show_not_raid_ready_highlighting && (!item.raid_ready || item.cloakItemLevel < Math.max(...sortedData.map(p => p.cloakItemLevel || 0)))) ? 'rgba(255, 193, 7, 0.08)' : 'transparent',
+                                        borderLeft: (show_not_raid_ready_highlighting && (!item.raid_ready || item.cloakItemLevel < Math.max(...sortedData.map(p => p.cloakItemLevel || 0)))) ? '2px solid rgba(255, 193, 7, 0.3)' : 'none',
                                         '&:hover': {
-                                            backgroundColor: (!item.raid_ready || item.cloakItemLevel < Math.max(...sortedData.map(p => p.cloakItemLevel || 0))) ? 'rgba(255, 193, 7, 0.12)' : 'rgba(255, 255, 255, 0.05)'
+                                            backgroundColor: (show_not_raid_ready_highlighting && (!item.raid_ready || item.cloakItemLevel < Math.max(...sortedData.map(p => p.cloakItemLevel || 0)))) ? 'rgba(255, 193, 7, 0.12)' : 'rgba(255, 255, 255, 0.05)'
                                         }
                                     }}
                                 >

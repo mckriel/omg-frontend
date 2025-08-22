@@ -52,7 +52,7 @@ const config: Config = {
                 // WoW-themed colors
                 wow: {
                     purple: "#2b1537",
-                    gold: "#8dd52b", 
+                    gold: "#f39c12", 
                     dark: "#110d17",
                     darker: "#08060c",
                 }
@@ -74,10 +74,10 @@ const config: Config = {
             keyframes: {
                 "glow": {
                     "0%": { 
-                        "text-shadow": "0 0 10px #8dd52b, 0 0 20px #8dd52b, 0 0 30px #8dd52b, 0 0 40px #8dd52b" 
+                        "text-shadow": "0 0 10px #f39c12, 0 0 20px #f39c12, 0 0 30px #f39c12, 0 0 40px #f39c12" 
                     },
                     "100%": { 
-                        "text-shadow": "0 0 5px #8dd52b, 0 0 10px #8dd52b, 0 0 15px #8dd52b, 0 0 20px #8dd52b" 
+                        "text-shadow": "0 0 5px #f39c12, 0 0 10px #f39c12, 0 0 15px #f39c12, 0 0 20px #f39c12" 
                     }
                 }
             }

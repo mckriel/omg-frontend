@@ -8,7 +8,7 @@
     --card-foreground: 220 218 218;
     --popover: 17 13 23;
     --popover-foreground: 220 218 218;
-    --primary: 141 213 43; /* #8dd52b - WoW gold */
+    --primary: 243 156 18; /* #f39c12 - WoW gold */
     --primary-foreground: 17 13 23;
     --secondary: 43 21 55; /* #2b1537 - WoW purple */
     --secondary-foreground: 255 255 255;
@@ -20,22 +20,22 @@
     --destructive-foreground: 255 255 255;
     --border: 39 39 42;
     --input: 39 39 42;
-    --ring: 141 213 43;
+    --ring: 243 156 18;
     --radius: 0.5rem;
     
     /* Custom WoW Lightning Dark variables */
     --wow-purple: #2b1537;
     --wow-purple-light: #3d1f4b;
     --wow-purple-dark: #1f0f29;
-    --wow-gold: #8dd52b;
-    --wow-gold-light: #a8f73a;
-    --wow-gold-glow: rgba(141, 213, 43, 0.3);
+    --wow-gold: #f39c12;
+    --wow-gold-light: #f4d03f;
+    --wow-gold-glow: rgba(243, 156, 18, 0.3);
     --wow-dark: #110d17;
     --wow-darker: #0a0612;
     --wow-darkest: #050309;
     --wow-glass: rgba(17, 13, 23, 0.85);
     --wow-glass-light: rgba(43, 21, 55, 0.25);
-    --wow-glass-border: rgba(141, 213, 43, 0.25);
+    --wow-glass-border: rgba(243, 156, 18, 0.25);
     --wow-accent-gradient: linear-gradient(135deg, var(--wow-purple), var(--wow-purple-light));
     --wow-gold-gradient: linear-gradient(135deg, var(--wow-gold), var(--wow-gold-light));
   }
@@ -47,7 +47,7 @@
   --card-foreground: 220 218 218;
   --popover: 17 13 23;
   --popover-foreground: 220 218 218;
-  --primary: 141 213 43;
+  --primary: 243 156 18;
   --primary-foreground: 17 13 23;
   --secondary: 43 21 55;
   --secondary-foreground: 255 255 255;
@@ -59,7 +59,7 @@
   --destructive-foreground: 255 255 255;
   --border: 39 39 42;
   --input: 39 39 42;
-  --ring: 141 213 43;
+  --ring: 243 156 18;
 }
 
 /* Glassmorphism utilities */

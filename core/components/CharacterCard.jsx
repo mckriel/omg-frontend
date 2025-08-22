@@ -3,7 +3,7 @@ import Paper from '@mui/material/Paper'
 import Typography from '@mui/material/Typography'
 import config from '@/app.config.js'
 
-const CharacterCard = ({ character, isDraggable, layout = 'horizontal' }) => {
+const CharacterCard = ({ character, isDraggable, layout = 'horizontal', show_not_raid_ready_highlighting }) => {
     const [{ isDragging }, drag] = useDrag(
         () => ({
             type: 'CHARACTER',
@@ -33,13 +33,21 @@ const CharacterCard = ({ character, isDraggable, layout = 'horizontal' }) => {
         return config.GUILLD_RANKS[character.guildRank] || 'Unknown Rank'
     }
 
+    // Check if character is raid ready based on item level
+    const is_raid_ready = character.item_level >= config.RAID_TEAM_ILVL
+
+    // Determine if highlighting should be applied
+    const should_highlight = show_not_raid_ready_highlighting && !is_raid_ready
+
     return (
         <div
             ref={drag}
-            className={`character-card ${layout} ${isDragging ? 'dragging' : ''} ${character.class}`}
+            className={`character-card ${layout} ${isDragging ? 'dragging' : ''} ${character.class} ${should_highlight ? 'not-raid-ready' : ''}`}
             style={{
                 opacity: isDragging ? 0.5 : 1,
                 cursor: isDraggable ? 'grab' : 'default',
+                backgroundColor: should_highlight ? 'rgba(255, 193, 7, 0.15)' : undefined,
+                borderLeft: should_highlight ? '3px solid rgba(255, 193, 7, 0.8)' : undefined,
             }}
         >
             {character?.media?.assets?.length ? (
