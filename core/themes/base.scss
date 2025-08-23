@@ -3,13 +3,29 @@
 @tailwind utilities;
 
 body, html {
-  background: url('/design/bg1.png') center center / cover no-repeat fixed, 
+  background: url('/design/bg1-mobile.webp') center center / cover no-repeat fixed, 
               linear-gradient(135deg, #0a0612 0%, #110d17 50%, #0f0a15 100%);
   font-family: var(--font-blizzard-body);
   font-size: 16px;
   color: #e8e6e6;
   padding: 0;
   margin: 0;
+
+  // Responsive background images for better performance
+  @media (min-width: 768px) {
+    background: url('/design/bg1-tablet.webp') center center / cover no-repeat fixed,
+                linear-gradient(135deg, #0a0612 0%, #110d17 50%, #0f0a15 100%);
+  }
+
+  @media (min-width: 1280px) {
+    background: url('/design/bg1-desktop.webp') center center / cover no-repeat fixed,
+                linear-gradient(135deg, #0a0612 0%, #110d17 50%, #0f0a15 100%);
+  }
+
+  @media (min-width: 1920px) {
+    background: url('/design/bg1.webp') center center / cover no-repeat fixed,
+                linear-gradient(135deg, #0a0612 0%, #110d17 50%, #0f0a15 100%);
+  }
 
   h1, h2, h3, h4, h5, h6 {
     font-family: var(--font-blizzard-heading);
@@ -209,9 +225,25 @@ body, html {
 
 // Navigation and layout styles
 .layout-root {
-  background: url('/design/bg1.png') center center / cover no-repeat fixed, 
+  background: url('/design/bg1-mobile.webp') center center / cover no-repeat fixed, 
               linear-gradient(135deg, #0a0612 0%, #110d17 50%, #0f0a15 100%);
   min-height: 100vh;
+
+  // Responsive background images for better performance
+  @media (min-width: 768px) {
+    background: url('/design/bg1-tablet.webp') center center / cover no-repeat fixed,
+                linear-gradient(135deg, #0a0612 0%, #110d17 50%, #0f0a15 100%);
+  }
+
+  @media (min-width: 1280px) {
+    background: url('/design/bg1-desktop.webp') center center / cover no-repeat fixed,
+                linear-gradient(135deg, #0a0612 0%, #110d17 50%, #0f0a15 100%);
+  }
+
+  @media (min-width: 1920px) {
+    background: url('/design/bg1.webp') center center / cover no-repeat fixed,
+                linear-gradient(135deg, #0a0612 0%, #110d17 50%, #0f0a15 100%);
+  }
 }
 
 .layout-content {

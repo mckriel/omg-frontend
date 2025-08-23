@@ -31,7 +31,7 @@ export default function AuditLayout({ children }) {
     }
 
     return <ThemeProvider>
-        <div className="min-h-screen" style={{ background: 'url(/design/bg1.png) center center / cover no-repeat fixed, linear-gradient(135deg, #0a0612 0%, #110d17 50%, #0f0a15 100%)' }}>
+        <div className="min-h-screen layout-root">
             {/* Modern Navigation */}
             <ModernNav />
             {/* Main content area */}
